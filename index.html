@@ -1,0 +1,2306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OCR J277 Paper 2 — CS Revision Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0d14;
+    --surface: #111520;
+    --surface2: #161c2d;
+    --border: #1e2a42;
+    --accent: #00e5ff;
+    --accent2: #7c3aed;
+    --accent3: #10b981;
+    --accent4: #f59e0b;
+    --accent5: #ef4444;
+    --text: #e2e8f0;
+    --text-muted: #64748b;
+    --text-dim: #94a3b8;
+    --glow: 0 0 20px rgba(0,229,255,0.15);
+    --glow-strong: 0 0 40px rgba(0,229,255,0.3);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Grid background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: 
+      linear-gradient(rgba(0,229,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,229,255,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: rgba(10,13,20,0.92);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-logo {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.9rem;
+    color: var(--accent);
+    letter-spacing: 0.05em;
+  }
+
+  .nav-logo span { color: var(--text-muted); }
+
+  .nav-links {
+    display: flex;
+    gap: 0.25rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 500;
+    padding: 0.4rem 0.75rem;
+    border-radius: 6px;
+    transition: all 0.2s;
+    letter-spacing: 0.02em;
+  }
+
+  .nav-links a:hover { color: var(--accent); background: rgba(0,229,255,0.08); }
+
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    padding: 4px;
+  }
+
+  .hamburger span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: var(--text-dim);
+    border-radius: 2px;
+    transition: all 0.3s;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(0,229,255,0.08);
+    border: 1px solid rgba(0,229,255,0.2);
+    border-radius: 100px;
+    padding: 0.35rem 1rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    margin-bottom: 2rem;
+    animation: fadeSlideDown 0.6s ease both;
+  }
+
+  .hero-badge::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: pulse 2s infinite;
+  }
+
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2.5rem, 7vw, 5.5rem);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    margin-bottom: 1.5rem;
+    animation: fadeSlideDown 0.6s 0.1s ease both;
+  }
+
+  .hero h1 .highlight {
+    background: linear-gradient(135deg, var(--accent) 0%, #7c3aed 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero p {
+    font-size: 1.1rem;
+    color: var(--text-dim);
+    max-width: 600px;
+    line-height: 1.7;
+    margin-bottom: 3rem;
+    animation: fadeSlideDown 0.6s 0.2s ease both;
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    animation: fadeSlideDown 0.6s 0.3s ease both;
+  }
+
+  .btn-primary {
+    padding: 0.85rem 2rem;
+    background: var(--accent);
+    color: var(--bg);
+    border: none;
+    border-radius: 8px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.25s;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    letter-spacing: 0.02em;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0,229,255,0.35);
+  }
+
+  .btn-secondary {
+    padding: 0.85rem 2rem;
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.25s;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: translateY(-2px);
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 3rem;
+    margin-top: 4rem;
+    animation: fadeSlideDown 0.6s 0.4s ease both;
+  }
+
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 1.8rem;
+    color: var(--accent);
+    display: block;
+  }
+  .stat-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  /* ── SECTIONS ── */
+  section {
+    position: relative;
+    z-index: 1;
+    padding: 5rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-header {
+    margin-bottom: 3rem;
+  }
+
+  .section-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--accent);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+    display: block;
+  }
+
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+
+  .section-desc {
+    color: var(--text-dim);
+    margin-top: 0.75rem;
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  /* ── TOPIC CARDS ── */
+  .topics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.25rem;
+  }
+
+  .topic-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .topic-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--card-color, var(--accent));
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .topic-card:hover {
+    border-color: var(--card-color, var(--accent));
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+  }
+
+  .topic-card:hover::before { opacity: 1; }
+
+  .topic-icon {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .topic-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+    margin-bottom: 0.5rem;
+  }
+
+  .topic-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    color: var(--text);
+  }
+
+  .topic-desc {
+    font-size: 0.83rem;
+    color: var(--text-muted);
+    line-height: 1.55;
+    margin-bottom: 1rem;
+  }
+
+  .topic-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 100px;
+    background: rgba(255,255,255,0.05);
+    color: var(--text-muted);
+    border: 1px solid rgba(255,255,255,0.07);
+  }
+
+  /* ── QUIZ SECTION ── */
+  #quiz-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2.5rem;
+    max-width: 800px;
+    margin: 0 auto 3rem;
+  }
+
+  .quiz-controls {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .quiz-select {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    cursor: pointer;
+    flex: 1;
+    min-width: 160px;
+  }
+
+  .quiz-select:focus { outline: none; border-color: var(--accent); }
+
+  .quiz-question {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1.75rem;
+    line-height: 1.4;
+    min-height: 60px;
+  }
+
+  .quiz-options {
+    display: grid;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .quiz-option {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1rem 1.25rem;
+    cursor: pointer;
+    font-size: 0.92rem;
+    line-height: 1.4;
+    transition: all 0.2s;
+    text-align: left;
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .quiz-option:hover:not(:disabled) {
+    border-color: var(--accent);
+    background: rgba(0,229,255,0.06);
+  }
+
+  .quiz-option.correct {
+    border-color: var(--accent3) !important;
+    background: rgba(16,185,129,0.12) !important;
+    color: var(--accent3) !important;
+  }
+
+  .quiz-option.wrong {
+    border-color: var(--accent5) !important;
+    background: rgba(239,68,68,0.1) !important;
+    color: var(--accent5) !important;
+  }
+
+  .quiz-option:disabled { cursor: default; }
+
+  .option-letter {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    min-width: 18px;
+    margin-top: 1px;
+  }
+
+  .quiz-feedback {
+    background: var(--surface2);
+    border-left: 3px solid var(--accent3);
+    border-radius: 0 8px 8px 0;
+    padding: 1rem 1.25rem;
+    font-size: 0.88rem;
+    line-height: 1.6;
+    color: var(--text-dim);
+    margin-bottom: 1.5rem;
+    display: none;
+  }
+
+  .quiz-feedback.visible { display: block; }
+  .quiz-feedback.wrong-fb { border-color: var(--accent5); }
+
+  .quiz-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+  }
+
+  .score-bar-wrap {
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+  }
+
+  .score-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    border-radius: 2px;
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+
+  .quiz-nav {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+  }
+
+  /* ── FLASHCARDS ── */
+  .flashcard-area {
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .flashcard-wrap {
+    perspective: 1000px;
+    margin-bottom: 1.5rem;
+    height: 260px;
+  }
+
+  .flashcard {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.5s cubic-bezier(0.4,0,0.2,1);
+    cursor: pointer;
+  }
+
+  .flashcard.flipped { transform: rotateY(180deg); }
+
+  .card-face {
+    position: absolute;
+    inset: 0;
+    border-radius: 14px;
+    padding: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    backface-visibility: hidden;
+  }
+
+  .card-front {
+    background: var(--surface);
+    border: 1px solid var(--border);
+  }
+
+  .card-back {
+    background: linear-gradient(135deg, rgba(0,229,255,0.08), rgba(124,58,237,0.08));
+    border: 1px solid rgba(0,229,255,0.25);
+    transform: rotateY(180deg);
+  }
+
+  .card-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+
+  .card-term {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .card-hint {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: 1rem;
+  }
+
+  .card-definition {
+    font-size: 0.97rem;
+    line-height: 1.65;
+    color: var(--text);
+  }
+
+  .flashcard-controls {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .card-counter {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    min-width: 70px;
+    text-align: center;
+  }
+
+  /* ── CHEAT SHEET ── */
+  .cheatsheet-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 1.25rem;
+  }
+
+  .cheat-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: border-color 0.3s;
+  }
+
+  .cheat-block:hover { border-color: rgba(0,229,255,0.3); }
+
+  .cheat-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--accent);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .cheat-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    font-size: 0.83rem;
+  }
+
+  .cheat-item:last-child { border-bottom: none; }
+  .cheat-key { color: var(--text-dim); flex: 1; line-height: 1.4; }
+  .cheat-val {
+    color: var(--text-muted);
+    text-align: right;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    flex: 1;
+    line-height: 1.5;
+  }
+
+  /* ── ALGORITHM VISUALISER ── */
+  .algo-area {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .algo-select-row {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .algo-canvas {
+    background: var(--surface2);
+    border-radius: 8px;
+    padding: 1.5rem;
+    min-height: 120px;
+    margin-bottom: 1.5rem;
+    display: flex;
+    gap: 0.5rem;
+    align-items: flex-end;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .bar {
+    background: var(--accent2);
+    border-radius: 4px 4px 0 0;
+    transition: all 0.3s;
+    min-width: 30px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 4px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    color: rgba(255,255,255,0.7);
+  }
+
+  .bar.comparing { background: var(--accent4); }
+  .bar.sorted { background: var(--accent3); }
+  .bar.pivot { background: var(--accent5); }
+
+  .algo-code {
+    background: var(--surface2);
+    border-radius: 8px;
+    padding: 1.25rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--text-dim);
+    line-height: 1.8;
+    white-space: pre;
+    overflow-x: auto;
+    margin-bottom: 1.5rem;
+    border: 1px solid var(--border);
+  }
+
+  .algo-code .hl { color: var(--accent); }
+  .algo-code .kw { color: var(--accent2); }
+  .algo-code .cm { color: var(--text-muted); font-style: italic; }
+  .algo-code .fn { color: var(--accent4); }
+
+  /* ── PROGRESS ── */
+  .progress-area {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 2rem;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .progress-topic {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .progress-topic:last-child { border-bottom: none; }
+
+  .progress-name {
+    font-size: 0.88rem;
+    color: var(--text);
+    flex: 1;
+    min-width: 120px;
+  }
+
+  .progress-bar-wrap {
+    flex: 2;
+    height: 6px;
+    background: var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    border-radius: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    transition: width 0.8s ease;
+  }
+
+  .progress-pct {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    min-width: 38px;
+    text-align: right;
+  }
+
+  /* ── MODAL ── */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.8);
+    backdrop-filter: blur(8px);
+    z-index: 200;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+  }
+
+  .modal-overlay.open { display: flex; }
+
+  .modal {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2.5rem;
+    max-width: 680px;
+    width: 100%;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+    animation: modalIn 0.3s ease;
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 1.25rem;
+    right: 1.25rem;
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    border-radius: 6px;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+
+  .modal-close:hover { border-color: var(--accent); color: var(--accent); }
+
+  .modal-topic-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    margin-bottom: 0.75rem;
+    display: block;
+  }
+
+  .modal-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+  }
+
+  .modal-body { font-size: 0.9rem; color: var(--text-dim); line-height: 1.7; }
+  .modal-body h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1rem;
+    color: var(--text);
+    margin: 1.25rem 0 0.5rem;
+  }
+  .modal-body ul { padding-left: 1.2rem; }
+  .modal-body li { margin-bottom: 0.4rem; }
+  .modal-body code {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 0.15rem 0.4rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--accent);
+  }
+
+  /* ── EXAM TIPS ── */
+  .tips-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+  }
+
+  .tip-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.25rem;
+    transition: border-color 0.3s;
+  }
+
+  .tip-card:hover { border-color: rgba(124,58,237,0.4); }
+
+  .tip-icon { font-size: 1.4rem; margin-bottom: 0.75rem; }
+  .tip-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+  }
+  .tip-text { font-size: 0.82rem; color: var(--text-muted); line-height: 1.55; }
+
+  /* ── FOOTER ── */
+  footer {
+    position: relative;
+    z-index: 1;
+    border-top: 1px solid var(--border);
+    padding: 3rem 2rem;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.82rem;
+  }
+
+  footer a { color: var(--accent); text-decoration: none; }
+
+  /* ── TAB SYSTEM ── */
+  .tab-nav {
+    display: flex;
+    gap: 0.25rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0.35rem;
+    margin-bottom: 2.5rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .tab-nav::-webkit-scrollbar { display: none; }
+
+  .tab-btn {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.83rem;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 7px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s;
+  }
+
+  .tab-btn.active {
+    background: var(--accent);
+    color: var(--bg);
+    font-weight: 600;
+  }
+
+  .tab-btn:not(.active):hover { color: var(--text); background: rgba(255,255,255,0.05); }
+
+  .tab-pane { display: none; }
+  .tab-pane.active { display: block; }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeSlideDown {
+    from { opacity: 0; transform: translateY(-16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  @keyframes modalIn {
+    from { opacity: 0; transform: scale(0.95) translateY(10px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 700px) {
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+    .hero-stats { gap: 1.5rem; }
+    .stat-num { font-size: 1.4rem; }
+    .quiz-controls { flex-direction: column; }
+    .algo-select-row { flex-direction: column; }
+    .modal { padding: 1.75rem; }
+    .topics-grid { grid-template-columns: 1fr; }
+    .cheatsheet-grid { grid-template-columns: 1fr; }
+    .tips-grid { grid-template-columns: 1fr; }
+  }
+
+  .mobile-menu {
+    display: none;
+    position: fixed;
+    top: 60px;
+    left: 0;
+    right: 0;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    z-index: 99;
+    padding: 1rem;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 0.9rem;
+    padding: 0.6rem 0.75rem;
+    border-radius: 6px;
+    transition: all 0.2s;
+  }
+  .mobile-menu a:hover { color: var(--accent); background: rgba(0,229,255,0.08); }
+
+  /* Code block in cheat */
+  .code-block {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    line-height: 1.8;
+    white-space: pre;
+    overflow-x: auto;
+    margin-top: 0.5rem;
+  }
+
+  .level-badge {
+    display: inline-block;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    padding: 0.15rem 0.5rem;
+    border-radius: 100px;
+    letter-spacing: 0.05em;
+    margin-left: 0.5rem;
+    vertical-align: middle;
+  }
+
+  .level-foundation { background: rgba(16,185,129,0.15); color: var(--accent3); border: 1px solid rgba(16,185,129,0.3); }
+  .level-higher { background: rgba(239,68,68,0.12); color: var(--accent5); border: 1px solid rgba(239,68,68,0.25); }
+  .level-all { background: rgba(0,229,255,0.1); color: var(--accent); border: 1px solid rgba(0,229,255,0.25); }
+
+  /* Difficulty selector */
+  .diff-row {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .diff-btn {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    padding: 0.35rem 0.85rem;
+    border-radius: 100px;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.04em;
+  }
+
+  .diff-btn:hover, .diff-btn.active {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(0,229,255,0.08);
+  }
+
+  .result-summary {
+    background: linear-gradient(135deg, rgba(0,229,255,0.08), rgba(124,58,237,0.08));
+    border: 1px solid rgba(0,229,255,0.2);
+    border-radius: 10px;
+    padding: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .result-summary.show { display: block; }
+  .result-score {
+    font-family: 'Space Mono', monospace;
+    font-size: 2.5rem;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 0.25rem;
+  }
+  .result-label { color: var(--text-dim); font-size: 0.9rem; margin-bottom: 1rem; display: block; }
+  .result-grade {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">J277 <span>/ Paper 2</span></div>
+  <ul class="nav-links">
+    <li><a href="#topics">Topics</a></li>
+    <li><a href="#quiz">Quiz</a></li>
+    <li><a href="#flashcards">Flashcards</a></li>
+    <li><a href="#cheatsheet">Cheat Sheet</a></li>
+    <li><a href="#algorithms">Algorithms</a></li>
+    <li><a href="#tips">Exam Tips</a></li>
+  </ul>
+  <div class="hamburger" onclick="toggleMenu()" id="hamburger">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#topics" onclick="closeMenu()">Topics</a>
+  <a href="#quiz" onclick="closeMenu()">Quiz</a>
+  <a href="#flashcards" onclick="closeMenu()">Flashcards</a>
+  <a href="#cheatsheet" onclick="closeMenu()">Cheat Sheet</a>
+  <a href="#algorithms" onclick="closeMenu()">Algorithms</a>
+  <a href="#tips" onclick="closeMenu()">Exam Tips</a>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">OCR GCSE Computer Science · J277/02</div>
+  <h1>Master <span class="highlight">Paper 2</span><br>Computational Thinking</h1>
+  <p>Everything you need to ace the J277 Paper 2 exam — interactive quizzes, flashcards, algorithm visualisations, and more. Suitable for all levels, from Foundation to Higher.</p>
+  <div class="hero-cta">
+    <a href="#quiz" class="btn-primary">▶ Start Quiz</a>
+    <a href="#topics" class="btn-secondary">📚 Browse Topics</a>
+  </div>
+  <div class="hero-stats">
+    <div class="stat"><span class="stat-num">6</span><span class="stat-label">Topic Areas</span></div>
+    <div class="stat"><span class="stat-num">80+</span><span class="stat-label">Quiz Questions</span></div>
+    <div class="stat"><span class="stat-num">60+</span><span class="stat-label">Flashcards</span></div>
+  </div>
+</div>
+
+<!-- TOPICS -->
+<section id="topics">
+  <div class="section-header">
+    <span class="section-label">// 2.1 – 2.6</span>
+    <h2 class="section-title">Paper 2 Topic Areas</h2>
+    <p class="section-desc">Click any topic to explore key concepts, definitions, and exam-style explanations.</p>
+  </div>
+
+  <div class="topics-grid" id="topicsGrid"></div>
+</section>
+
+<!-- QUIZ -->
+<section id="quiz">
+  <div class="section-header">
+    <span class="section-label">// interactive</span>
+    <h2 class="section-title">Practice Quiz</h2>
+    <p class="section-desc">Test your knowledge with exam-style questions. Instant feedback and explanations included.</p>
+  </div>
+
+  <div style="max-width:800px; margin: 0 auto;">
+    <div class="diff-row">
+      <button class="diff-btn active" onclick="setDiff('all',this)">ALL LEVELS</button>
+      <button class="diff-btn" onclick="setDiff('foundation',this)">FOUNDATION</button>
+      <button class="diff-btn" onclick="setDiff('higher',this)">HIGHER</button>
+    </div>
+
+    <div id="quiz-section">
+      <div class="quiz-meta">
+        <span id="quizTopic">All Topics</span>
+        <span id="quizProgress">Q1 of 10</span>
+      </div>
+      <div class="score-bar-wrap"><div class="score-bar" id="scoreBar"></div></div>
+
+      <div class="quiz-controls">
+        <select class="quiz-select" id="topicSelect" onchange="resetQuiz()">
+          <option value="all">All Topics</option>
+          <option value="algorithms">2.1 Algorithms</option>
+          <option value="programming">2.2 Programming Fundamentals</option>
+          <option value="languages">2.3 Languages & IDEs</option>
+          <option value="data">2.4 Data Representation</option>
+          <option value="networks">2.5 Networks & Security</option>
+          <option value="issues">2.6 Issues & Ethics</option>
+        </select>
+      </div>
+
+      <div class="quiz-question" id="quizQuestion">Loading question...</div>
+
+      <div class="quiz-options" id="quizOptions"></div>
+
+      <div class="quiz-feedback" id="quizFeedback"></div>
+
+      <div class="result-summary" id="resultSummary">
+        <span class="result-score" id="resultScore">0/10</span>
+        <span class="result-label">Quiz Complete!</span>
+        <div class="result-grade" id="resultGrade"></div>
+        <button class="btn-primary" onclick="resetQuiz()">🔄 Try Again</button>
+      </div>
+
+      <div class="quiz-nav" id="quizNav">
+        <button class="btn-secondary" id="nextBtn" onclick="nextQuestion()" style="display:none;">Next Question →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FLASHCARDS -->
+<section id="flashcards">
+  <div class="section-header">
+    <span class="section-label">// memorise</span>
+    <h2 class="section-title">Flashcards</h2>
+    <p class="section-desc">Click a card to reveal the definition. Use the arrows to navigate.</p>
+  </div>
+
+  <div class="flashcard-area">
+    <div class="tab-nav">
+      <button class="tab-btn active" onclick="setCardTopic('all',this)">All</button>
+      <button class="tab-btn" onclick="setCardTopic('algorithms',this)">Algorithms</button>
+      <button class="tab-btn" onclick="setCardTopic('programming',this)">Programming</button>
+      <button class="tab-btn" onclick="setCardTopic('data',this)">Data</button>
+      <button class="tab-btn" onclick="setCardTopic('networks',this)">Networks</button>
+      <button class="tab-btn" onclick="setCardTopic('security',this)">Security</button>
+      <button class="tab-btn" onclick="setCardTopic('ethics',this)">Ethics</button>
+    </div>
+
+    <div class="flashcard-wrap">
+      <div class="flashcard" id="flashcard" onclick="flipCard()">
+        <div class="card-face card-front">
+          <span class="card-label">TERM</span>
+          <div class="card-term" id="cardTerm">Click to begin</div>
+          <div class="card-hint">click to reveal →</div>
+        </div>
+        <div class="card-face card-back">
+          <span class="card-label">DEFINITION</span>
+          <div class="card-definition" id="cardDef">Definition appears here</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flashcard-controls">
+      <button class="btn-secondary" onclick="prevCard()">← Prev</button>
+      <div class="card-counter" id="cardCounter">1 / 60</div>
+      <button class="btn-secondary" onclick="nextCard()">Next →</button>
+    </div>
+
+    <div style="text-align:center; margin-top:1rem;">
+      <button class="btn-secondary" onclick="shuffleCards()" style="font-size:0.8rem;">🔀 Shuffle</button>
+    </div>
+  </div>
+</section>
+
+<!-- CHEAT SHEET -->
+<section id="cheatsheet">
+  <div class="section-header">
+    <span class="section-label">// quick reference</span>
+    <h2 class="section-title">Cheat Sheet</h2>
+    <p class="section-desc">Key facts, syntax, and definitions to memorise before the exam.</p>
+  </div>
+
+  <div class="cheatsheet-grid" id="cheatGrid"></div>
+</section>
+
+<!-- ALGORITHM VISUALISER -->
+<section id="algorithms">
+  <div class="section-header">
+    <span class="section-label">// visualise</span>
+    <h2 class="section-title">Algorithm Visualiser</h2>
+    <p class="section-desc">Watch sorting algorithms step through data in real time, with OCR pseudocode shown alongside.</p>
+  </div>
+
+  <div class="algo-area">
+    <div class="algo-select-row">
+      <select class="quiz-select" id="algoSelect" onchange="setupAlgo()">
+        <option value="bubble">Bubble Sort</option>
+        <option value="merge">Merge Sort</option>
+        <option value="insertion">Insertion Sort</option>
+        <option value="linear">Linear Search</option>
+        <option value="binary">Binary Search</option>
+      </select>
+      <button class="btn-primary" onclick="runAlgo()" id="runBtn">▶ Run</button>
+      <button class="btn-secondary" onclick="resetAlgo()">↺ Reset</button>
+    </div>
+
+    <div class="algo-canvas" id="algoCanvas"></div>
+    <div id="algoStatus" style="text-align:center; color:var(--text-muted); font-size:0.83rem; margin-bottom:1rem; min-height:20px;"></div>
+    <div class="algo-code" id="algoCode"></div>
+  </div>
+</section>
+
+<!-- EXAM TIPS -->
+<section id="tips">
+  <div class="section-header">
+    <span class="section-label">// strategy</span>
+    <h2 class="section-title">Exam Tips</h2>
+    <p class="section-desc">Key strategies for maximising marks on Paper 2.</p>
+  </div>
+
+  <div class="tips-grid" id="tipsGrid"></div>
+</section>
+
+<footer>
+  <p>OCR J277 Computer Science Paper 2 — Revision Hub</p>
+  <p style="margin-top:0.5rem; color:#334155;">Built to help students of all abilities. Not affiliated with OCR.</p>
+  <p style="margin-top:0.5rem;">To publish: upload to GitHub Pages — set <code style="background:var(--surface2);padding:0.1rem 0.4rem;border-radius:4px;color:var(--accent);font-size:0.8rem;">index.html</code> as root in your repo.</p>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModalDirect()">×</button>
+    <span class="modal-topic-label" id="modalLabel"></span>
+    <h2 class="modal-title" id="modalTitle"></h2>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════════════════
+
+const TOPICS = [
+  {
+    id: 'algorithms',
+    num: '2.1',
+    icon: '🔁',
+    title: 'Algorithms',
+    color: '#00e5ff',
+    desc: 'Computational thinking, searching, sorting, and algorithm design concepts.',
+    tags: ['Decomposition', 'Abstraction', 'Flowcharts', 'Pseudocode', 'Sorting', 'Searching'],
+    content: `
+      <h3>Computational Thinking</h3>
+      <ul>
+        <li><strong>Decomposition</strong> — Breaking a problem into smaller, manageable sub-problems.</li>
+        <li><strong>Abstraction</strong> — Removing unnecessary details, focusing on what matters.</li>
+        <li><strong>Algorithmic thinking</strong> — Creating a step-by-step solution that can be followed.</li>
+      </ul>
+      <h3>Searching Algorithms</h3>
+      <ul>
+        <li><strong>Linear Search</strong> — Checks each element one by one. Works on unsorted data. O(n) time.</li>
+        <li><strong>Binary Search</strong> — Repeatedly halves the search space. Requires sorted data. O(log n) time.</li>
+      </ul>
+      <h3>Sorting Algorithms</h3>
+      <ul>
+        <li><strong>Bubble Sort</strong> — Repeatedly compares adjacent pairs and swaps if wrong order. O(n²). Simple but inefficient.</li>
+        <li><strong>Merge Sort</strong> — Divide and conquer. Split, sort, merge. O(n log n). More efficient for large data.</li>
+        <li><strong>Insertion Sort</strong> — Builds a sorted list one item at a time. O(n²) worst, O(n) best.</li>
+      </ul>
+      <h3>Representing Algorithms</h3>
+      <ul>
+        <li><strong>Flowcharts</strong> — Use standard shapes: oval (start/end), rectangle (process), diamond (decision), parallelogram (I/O).</li>
+        <li><strong>Pseudocode</strong> — OCR Exam Reference Language. Not real code but structured like it.</li>
+      </ul>
+      <h3>Efficiency</h3>
+      <ul>
+        <li>Time complexity: how run time grows with input size.</li>
+        <li>Space complexity: how memory usage grows.</li>
+        <li>Merge sort is more efficient than bubble sort for large datasets.</li>
+      </ul>
+    `
+  },
+  {
+    id: 'programming',
+    num: '2.2',
+    icon: '💻',
+    title: 'Programming Fundamentals',
+    color: '#7c3aed',
+    desc: 'Data types, variables, control flow, subroutines, arrays and defensive programming.',
+    tags: ['Variables', 'Loops', 'Functions', 'Arrays', 'Defensive Programming'],
+    content: `
+      <h3>Data Types</h3>
+      <ul>
+        <li><strong>Integer</strong> — Whole numbers. e.g. <code>42</code></li>
+        <li><strong>Real/Float</strong> — Decimal numbers. e.g. <code>3.14</code></li>
+        <li><strong>Boolean</strong> — True or False only.</li>
+        <li><strong>Character</strong> — A single character. e.g. <code>'A'</code></li>
+        <li><strong>String</strong> — Sequence of characters. e.g. <code>"Hello"</code></li>
+      </ul>
+      <h3>Variables & Constants</h3>
+      <ul>
+        <li><strong>Variable</strong> — A named storage location whose value can change.</li>
+        <li><strong>Constant</strong> — A named value that cannot change during execution.</li>
+        <li>Casting: converting between types e.g. <code>int("5")</code></li>
+      </ul>
+      <h3>Selection (Branching)</h3>
+      <ul>
+        <li><code>IF … THEN … ELSE … ENDIF</code></li>
+        <li><code>SWITCH/CASE</code> — for multiple specific values.</li>
+      </ul>
+      <h3>Iteration (Loops)</h3>
+      <ul>
+        <li><code>FOR i = 1 TO 10</code> — count-controlled</li>
+        <li><code>WHILE condition DO</code> — condition-controlled, may not run</li>
+        <li><code>DO … UNTIL condition</code> — runs at least once</li>
+      </ul>
+      <h3>Subroutines</h3>
+      <ul>
+        <li><strong>Procedure</strong> — performs a task, does not return a value.</li>
+        <li><strong>Function</strong> — returns a value to the calling code.</li>
+        <li>Parameters pass data in; return values pass data out.</li>
+        <li>Benefits: reusable, easier to test, reduces repetition.</li>
+      </ul>
+      <h3>Arrays</h3>
+      <ul>
+        <li>A list of values of the same data type stored together.</li>
+        <li>Indexed from 0 in most languages.</li>
+        <li>1D: <code>scores[5]</code> — 2D: <code>grid[3][3]</code></li>
+      </ul>
+      <h3>Defensive Programming</h3>
+      <ul>
+        <li>Input validation — check data is correct type/range/length.</li>
+        <li>Authentication — usernames and passwords.</li>
+        <li>Testing — normal, boundary, and erroneous data.</li>
+        <li>Maintainability — comments, meaningful names, indentation.</li>
+      </ul>
+      <h3>String Handling (OCR Reference)</h3>
+      <ul>
+        <li><code>LEN(str)</code> — length</li>
+        <li><code>SUBSTRING(str, start, length)</code></li>
+        <li><code>str.upper()</code> / <code>str.lower()</code></li>
+        <li><code>ASC("A")</code> — ASCII code; <code>CHR(65)</code> — character</li>
+      </ul>
+    `
+  },
+  {
+    id: 'languages',
+    num: '2.3',
+    icon: '🗣️',
+    title: 'Programming Languages & IDEs',
+    color: '#10b981',
+    desc: 'High vs low-level languages, translators, and IDE features.',
+    tags: ['High-level', 'Low-level', 'Compiler', 'Interpreter', 'IDE'],
+    content: `
+      <h3>Levels of Language</h3>
+      <ul>
+        <li><strong>High-level language</strong> (e.g. Python, Java) — human-readable, portable, uses English-like syntax. Needs translating.</li>
+        <li><strong>Low-level language</strong> — closer to machine code. Harder to write but faster and more direct control.</li>
+        <li><strong>Assembly language</strong> — uses mnemonics (ADD, MOV, LDR). One-to-one with machine code.</li>
+        <li><strong>Machine code</strong> — binary (0s and 1s) that the CPU directly executes.</li>
+      </ul>
+      <h3>Translators</h3>
+      <ul>
+        <li><strong>Compiler</strong> — translates entire source code to object code before running. Faster execution; errors reported after full compilation.</li>
+        <li><strong>Interpreter</strong> — translates and executes line by line. Easier to debug; stops at first error. Slower overall.</li>
+        <li><strong>Assembler</strong> — translates assembly language to machine code.</li>
+      </ul>
+      <h3>IDE Features</h3>
+      <ul>
+        <li><strong>Code editor</strong> — syntax highlighting, auto-indent.</li>
+        <li><strong>Debugger</strong> — set breakpoints, step through code, inspect variables.</li>
+        <li><strong>Run/Build</strong> — execute the program from within the IDE.</li>
+        <li><strong>Error diagnostics</strong> — highlights syntax errors in real time.</li>
+        <li><strong>Auto-complete</strong> — suggests keywords and variable names.</li>
+      </ul>
+      <h3>Advantages of High-level Languages</h3>
+      <ul>
+        <li>Easier to learn and write</li>
+        <li>Portable across different hardware</li>
+        <li>Faster development time</li>
+      </ul>
+      <h3>Advantages of Low-level Languages</h3>
+      <ul>
+        <li>More control over hardware</li>
+        <li>Faster execution</li>
+        <li>Smaller file size</li>
+        <li>Used in embedded systems, OS kernels</li>
+      </ul>
+    `
+  },
+  {
+    id: 'data',
+    num: '2.4',
+    icon: '📊',
+    title: 'Data Representation',
+    color: '#f59e0b',
+    desc: 'Binary, hexadecimal, character sets, images, sound, and compression.',
+    tags: ['Binary', 'Hex', 'ASCII', 'Unicode', 'Compression', 'Images'],
+    content: `
+      <h3>Number Systems</h3>
+      <ul>
+        <li><strong>Binary (base 2)</strong> — 0s and 1s. Each digit is a bit.</li>
+        <li><strong>Denary (base 10)</strong> — everyday decimal numbers.</li>
+        <li><strong>Hexadecimal (base 16)</strong> — digits 0–9 then A–F. Used as shorthand for binary.</li>
+      </ul>
+      <h3>Conversions</h3>
+      <ul>
+        <li>Binary → Denary: use place values (128, 64, 32, 16, 8, 4, 2, 1)</li>
+        <li>Denary → Binary: repeated division by 2</li>
+        <li>Binary → Hex: group into nibbles (4 bits each) — e.g. <code>1010 1111</code> = <code>AF</code></li>
+        <li>Hex → Denary: multiply each digit by 16^position</li>
+      </ul>
+      <h3>Binary Arithmetic</h3>
+      <ul>
+        <li>Addition: 0+0=0, 0+1=1, 1+1=10 (carry 1), 1+1+1=11</li>
+        <li>Overflow: result too large for allocated bits</li>
+        <li>Left shift: multiply by 2. Right shift: divide by 2.</li>
+      </ul>
+      <h3>Character Encoding</h3>
+      <ul>
+        <li><strong>ASCII</strong> — 7-bit, 128 characters. Basic Latin alphabet.</li>
+        <li><strong>Unicode</strong> — includes all world languages. UTF-8, UTF-16, UTF-32 variants. More bits per character.</li>
+        <li>Characters are logically ordered: 'B' is one more than 'A'.</li>
+      </ul>
+      <h3>Images</h3>
+      <ul>
+        <li><strong>Pixel</strong> — smallest element of a bitmap image.</li>
+        <li><strong>Colour depth</strong> — bits per pixel. More bits = more colours.</li>
+        <li><strong>Resolution</strong> — pixels per row × columns. Higher = more detail = larger file.</li>
+        <li>File size = width × height × colour depth (in bits) ÷ 8 (for bytes)</li>
+        <li><strong>Metadata</strong> — stored info about image (width, height, colour depth, date).</li>
+      </ul>
+      <h3>Sound</h3>
+      <ul>
+        <li><strong>Sampling</strong> — measuring sound wave amplitude at regular intervals.</li>
+        <li><strong>Sample rate</strong> — samples per second (Hz). Higher = better quality, larger file.</li>
+        <li><strong>Bit depth</strong> — bits per sample. Higher = more dynamic range.</li>
+        <li>File size = sample rate × bit depth × duration × channels</li>
+      </ul>
+      <h3>Compression</h3>
+      <ul>
+        <li><strong>Lossy</strong> — permanently removes data. Smaller file, reduced quality. e.g. MP3, JPEG.</li>
+        <li><strong>Lossless</strong> — no data lost, original can be fully restored. e.g. PNG, FLAC, ZIP.</li>
+        <li><strong>Run-length encoding (RLE)</strong> — stores repeated data as (value, count) pairs.</li>
+        <li><strong>Huffman coding</strong> — frequent characters get shorter codes.</li>
+      </ul>
+    `
+  },
+  {
+    id: 'networks',
+    num: '2.5',
+    icon: '🌐',
+    title: 'Networks & Security',
+    color: '#ef4444',
+    desc: 'Network types, protocols, the internet, threats, and cybersecurity measures.',
+    tags: ['LAN', 'WAN', 'TCP/IP', 'HTTP', 'Encryption', 'Malware'],
+    content: `
+      <h3>Network Types</h3>
+      <ul>
+        <li><strong>LAN (Local Area Network)</strong> — covers a small geographical area (e.g. school, office). Usually owned by the organisation.</li>
+        <li><strong>WAN (Wide Area Network)</strong> — covers large areas; uses third-party connections. The internet is the largest WAN.</li>
+      </ul>
+      <h3>Network Hardware</h3>
+      <ul>
+        <li><strong>Router</strong> — directs packets between networks; connects LAN to WAN.</li>
+        <li><strong>Switch</strong> — connects devices within a LAN; uses MAC addresses.</li>
+        <li><strong>Wireless Access Point (WAP)</strong> — allows wireless devices to connect to a wired network.</li>
+        <li><strong>NIC (Network Interface Card)</strong> — allows a device to connect to a network.</li>
+      </ul>
+      <h3>Network Topologies</h3>
+      <ul>
+        <li><strong>Star topology</strong> — all devices connect to a central switch/hub. Reliable; if one device fails, others unaffected. Expensive (central switch).</li>
+        <li><strong>Bus topology</strong> — all devices on one backbone cable. Cheap but single point of failure; collisions.</li>
+        <li><strong>Mesh topology</strong> — every device connects to every other. Highly reliable; expensive and complex.</li>
+      </ul>
+      <h3>Protocols</h3>
+      <ul>
+        <li><strong>TCP/IP</strong> — foundation of internet communication. TCP ensures reliable delivery; IP routes packets.</li>
+        <li><strong>HTTP/HTTPS</strong> — web page transfer. HTTPS uses TLS for encryption.</li>
+        <li><strong>FTP</strong> — file transfer between systems.</li>
+        <li><strong>SMTP/IMAP/POP3</strong> — email sending and retrieval.</li>
+        <li><strong>DNS</strong> — Domain Name System; translates URLs to IP addresses.</li>
+      </ul>
+      <h3>The Internet & Web</h3>
+      <ul>
+        <li><strong>Internet</strong> — global network of networks; physical infrastructure.</li>
+        <li><strong>World Wide Web</strong> — service that runs on the internet; uses HTTP and HTML.</li>
+        <li><strong>IP address</strong> — unique identifier for a device on a network.</li>
+        <li><strong>Cloud computing</strong> — remote servers for storage, software, and processing.</li>
+      </ul>
+      <h3>Cyber Threats</h3>
+      <ul>
+        <li><strong>Malware</strong> — malicious software (virus, worm, trojan, ransomware, spyware).</li>
+        <li><strong>Phishing</strong> — fake emails/sites to steal credentials. A form of social engineering.</li>
+        <li><strong>Brute force</strong> — systematically trying every possible password.</li>
+        <li><strong>Denial of Service (DoS)</strong> — flooding a server with requests to make it unavailable.</li>
+        <li><strong>Man in the middle</strong> — intercepting communications between two parties.</li>
+        <li><strong>SQL injection</strong> — inserting malicious SQL into input fields.</li>
+      </ul>
+      <h3>Cyber Defences</h3>
+      <ul>
+        <li><strong>Firewall</strong> — monitors and filters incoming/outgoing network traffic.</li>
+        <li><strong>Encryption</strong> — scrambles data so only authorised parties can read it.</li>
+        <li><strong>Two-factor authentication (2FA)</strong> — requires two forms of verification.</li>
+        <li><strong>Anti-malware software</strong> — detects and removes malicious programs.</li>
+        <li><strong>Software updates/patches</strong> — fix known vulnerabilities.</li>
+        <li><strong>Strong passwords</strong> — long, complex, unique passwords.</li>
+      </ul>
+    `
+  },
+  {
+    id: 'issues',
+    num: '2.6',
+    icon: '⚖️',
+    title: 'Legal, Ethical & Environmental Issues',
+    color: '#06b6d4',
+    desc: 'Legislation, ethical impacts, privacy, environmental effects, and open/proprietary software.',
+    tags: ['GDPR', 'Computer Misuse Act', 'Copyright', 'Ethics', 'Environment'],
+    content: `
+      <h3>Key Legislation</h3>
+      <ul>
+        <li><strong>Computer Misuse Act 1990</strong> — makes unauthorised access, modification, or impairment of computer systems illegal. Three offences: unauthorised access, access with intent to commit further offences, unauthorised modification.</li>
+        <li><strong>Data Protection Act 2018 / GDPR</strong> — governs how personal data must be collected, stored, and used. Key principles: lawful purpose, data minimisation, accuracy, storage limitation, security.</li>
+        <li><strong>Copyright, Designs and Patents Act 1988</strong> — protects original creative works. Software is protected by copyright; cannot be copied without permission.</li>
+      </ul>
+      <h3>Ethical Issues</h3>
+      <ul>
+        <li><strong>Privacy</strong> — tracking, cookies, data collection by apps/websites.</li>
+        <li><strong>Surveillance</strong> — CCTV, government monitoring, facial recognition.</li>
+        <li><strong>AI and automation</strong> — job displacement, bias in algorithms.</li>
+        <li><strong>Censorship vs freedom of speech</strong> — filtering content online.</li>
+        <li><strong>Digital divide</strong> — unequal access to technology globally.</li>
+      </ul>
+      <h3>Environmental Issues</h3>
+      <ul>
+        <li>Data centres use vast amounts of electricity.</li>
+        <li>Electronic waste (e-waste) from discarded devices.</li>
+        <li>Manufacturing computers uses rare earth metals.</li>
+        <li>Cloud computing can reduce energy use through shared infrastructure.</li>
+        <li>Carbon footprint of the internet is significant and growing.</li>
+      </ul>
+      <h3>Open Source vs Proprietary Software</h3>
+      <ul>
+        <li><strong>Open source</strong> — source code is freely available. Can be modified and redistributed. Community-maintained. e.g. Linux, LibreOffice.</li>
+        <li><strong>Proprietary</strong> — source code is private. Requires a licence. Vendor support. e.g. Microsoft Windows, Adobe Photoshop.</li>
+      </ul>
+      <h3>Cultural & Social Impacts</h3>
+      <ul>
+        <li>Social media influence on communication and mental health.</li>
+        <li>Cyberbullying and online abuse.</li>
+        <li>Access to education and information through the internet.</li>
+        <li>Globalisation and remote working enabled by technology.</li>
+      </ul>
+    `
+  }
+];
+
+// ── QUIZ DATA ──
+const QUESTIONS = [
+  // ALGORITHMS
+  { topic:'algorithms', level:'foundation', q:'What is decomposition in computational thinking?', options:['Writing code in multiple files','Breaking a problem into smaller sub-problems','Adding comments to code','Removing variables from a program'], correct:1, exp:'Decomposition means breaking a complex problem into smaller, manageable parts that can each be solved individually.' },
+  { topic:'algorithms', level:'foundation', q:'Which sorting algorithm works by repeatedly swapping adjacent elements if they are in the wrong order?', options:['Merge sort','Binary search','Bubble sort','Insertion sort'], correct:2, exp:'Bubble sort compares adjacent pairs and swaps them if they are in the wrong order, "bubbling" the largest values to the end.' },
+  { topic:'algorithms', level:'higher', q:'What is the time complexity of merge sort in the worst case?', options:['O(n)','O(n²)','O(n log n)','O(log n)'], correct:2, exp:'Merge sort uses divide and conquer, giving it O(n log n) time complexity — much more efficient than O(n²) algorithms like bubble sort for large datasets.' },
+  { topic:'algorithms', level:'foundation', q:'Binary search requires the data to be in what state before searching?', options:['Randomised','Sorted','Reversed','Encrypted'], correct:1, exp:'Binary search works by halving the search space each time, which only works correctly if the data is already sorted.' },
+  { topic:'algorithms', level:'foundation', q:'What shape is used in a flowchart to represent a decision?', options:['Rectangle','Oval','Parallelogram','Diamond'], correct:3, exp:'A diamond (rhombus) shape in a flowchart represents a decision point, usually a yes/no question.' },
+  { topic:'algorithms', level:'higher', q:'In linear search, what is the worst-case number of comparisons to find an item in a list of n elements?', options:['1','log₂(n)','n','n²'], correct:2, exp:'In the worst case, linear search checks every element — so n comparisons for a list of n items.' },
+  { topic:'algorithms', level:'higher', q:'Which describes abstraction correctly?', options:['Adding more detail to a solution','Removing unnecessary details to focus on what is important','Splitting code into functions','Testing code with boundary data'], correct:1, exp:'Abstraction involves hiding irrelevant details and focusing only on what matters for the task at hand.' },
+  // PROGRAMMING
+  { topic:'programming', level:'foundation', q:'Which data type would you use to store the value True or False?', options:['String','Integer','Boolean','Float'], correct:2, exp:'A Boolean data type can only hold one of two values: True or False. Ideal for flags and conditions.' },
+  { topic:'programming', level:'foundation', q:'What is the difference between a procedure and a function?', options:['A function takes parameters; a procedure does not','A procedure returns a value; a function does not','A function returns a value; a procedure does not','There is no difference'], correct:2, exp:'A function returns a value to the calling code using a return statement. A procedure carries out a task but does not return a value.' },
+  { topic:'programming', level:'foundation', q:'What type of loop is guaranteed to run at least once?', options:['FOR loop','WHILE loop','DO...UNTIL loop','None of the above'], correct:2, exp:'A DO...UNTIL loop executes the body first, then checks the condition, so it always runs at least once.' },
+  { topic:'programming', level:'higher', q:'What is the purpose of input validation?', options:['To make code run faster','To check that data entered is acceptable before processing','To convert data types','To encrypt user data'], correct:1, exp:'Input validation ensures data is of the correct type, within a valid range, or of the right length before it is used, preventing errors or security issues.' },
+  { topic:'programming', level:'foundation', q:'What does LEN("Hello") return in OCR pseudocode?', options:['4','5','6','"Hello"'], correct:1, exp:'LEN() returns the number of characters in a string. "Hello" has 5 characters.' },
+  { topic:'programming', level:'higher', q:'A 2D array called grid is declared as grid[3][4]. How many elements does it contain?', options:['7','12','34','9'], correct:1, exp:'A 2D array with 3 rows and 4 columns contains 3 × 4 = 12 elements.' },
+  { topic:'programming', level:'foundation', q:'Which testing type checks values at the edge of an acceptable range?', options:['Normal testing','Boundary testing','Erroneous testing','White-box testing'], correct:1, exp:'Boundary testing uses values at the extreme edges of valid input ranges to check the program handles limits correctly.' },
+  { topic:'programming', level:'higher', q:'What does the following pseudocode output?\nx = 0\nFOR i = 1 TO 5\n  x = x + i\nNEXT i\nPRINT x', options:['5','10','15','25'], correct:2, exp:'The loop adds 1+2+3+4+5 = 15 to x. This is a classic summation loop.' },
+  // LANGUAGES
+  { topic:'languages', level:'foundation', q:'What is the key advantage of a compiled language over an interpreted one?', options:['Easier to debug','Faster execution once compiled','Translates line by line','Needs no translator'], correct:1, exp:'A compiler translates the entire program into object code once, which then runs directly. Interpreters translate line by line each time, which is slower.' },
+  { topic:'languages', level:'foundation', q:'What does an IDE stand for?', options:['Internet Development Engine','Integrated Development Environment','Internal Debug Engine','Interface Design Editor'], correct:1, exp:'IDE stands for Integrated Development Environment — a software application that provides comprehensive facilities for software development.' },
+  { topic:'languages', level:'higher', q:'Which translator converts assembly language directly to machine code?', options:['Compiler','Interpreter','Assembler','Linker'], correct:2, exp:'An assembler translates assembly language (using mnemonics like ADD and MOV) into machine code (binary).' },
+  { topic:'languages', level:'foundation', q:'Which of these is a feature of an IDE that helps find errors?', options:['Spell checker','Debugger','Auto-save','Version control'], correct:1, exp:'A debugger allows you to step through code, set breakpoints, and inspect variable values to find and fix errors.' },
+  { topic:'languages', level:'higher', q:'What is the main disadvantage of a high-level language compared to a low-level language?', options:['Harder to read','Less portable','Less direct control over hardware','Requires more training'], correct:2, exp:'High-level languages abstract away hardware details, so you have less direct control over memory and CPU operations compared to assembly or machine code.' },
+  // DATA
+  { topic:'data', level:'foundation', q:'What is the denary (decimal) value of the binary number 00001010?', options:['8','10','12','20'], correct:1, exp:'00001010 = 0+0+0+0+8+0+2+0 = 10. The bits represent 128,64,32,16,8,4,2,1.' },
+  { topic:'data', level:'foundation', q:'What does increasing the colour depth of an image do?', options:['Decreases file size','Increases number of possible colours and file size','Reduces resolution','Makes the image grayscale'], correct:1, exp:'Colour depth is the number of bits per pixel. More bits = more possible colours = larger file size.' },
+  { topic:'data', level:'higher', q:'What is the file size in bytes of a 400×300 pixel image with 24-bit colour depth?', options:['120,000 bytes','360,000 bytes','3,600 bytes','1,440,000 bytes'], correct:1, exp:'File size = 400 × 300 × 24 bits = 2,880,000 bits ÷ 8 = 360,000 bytes.' },
+  { topic:'data', level:'foundation', q:'What is the hexadecimal equivalent of the binary nibble 1101?', options:['D','B','E','C'], correct:0, exp:'1101 in binary = 8+4+0+1 = 13 in denary. 13 in hexadecimal = D.' },
+  { topic:'data', level:'foundation', q:'Which type of compression permanently removes data?', options:['Lossless','Run-length encoding','Lossy','Huffman coding'], correct:2, exp:'Lossy compression permanently discards data (e.g. MP3, JPEG). You cannot recover the original file exactly.' },
+  { topic:'data', level:'higher', q:'Why does Unicode use more storage than ASCII for the same characters?', options:['Unicode uses fewer bits','Unicode uses more bits per character to represent a larger character set','ASCII uses more bits per character','They use the same number of bits'], correct:1, exp:'Unicode was designed to represent every character in every language worldwide. This requires more bits per character than ASCII\'s 7-bit system.' },
+  { topic:'data', level:'higher', q:'What effect does increasing the sample rate of audio have?', options:['Reduces file size','Reduces audio quality','Improves audio quality and increases file size','Has no effect on quality'], correct:2, exp:'A higher sample rate means more measurements per second, capturing more detail of the sound wave. This improves quality but increases file size.' },
+  // NETWORKS
+  { topic:'networks', level:'foundation', q:'What does a router do?', options:['Stores website data','Connects devices within a single LAN','Routes data packets between networks','Converts digital to analogue signals'], correct:2, exp:'A router directs data packets between different networks. It connects a LAN to a WAN (like the internet) and determines the best route for packets.' },
+  { topic:'networks', level:'foundation', q:'What does DNS stand for and what does it do?', options:['Data Network System — stores web pages','Domain Name System — converts domain names to IP addresses','Digital Network Security — encrypts traffic','Direct Network Service — speeds up connections'], correct:1, exp:'DNS (Domain Name System) translates human-readable domain names (like www.bbc.co.uk) into the numerical IP addresses computers use to communicate.' },
+  { topic:'networks', level:'foundation', q:'Which protocol is used to securely transfer web pages over the internet?', options:['FTP','HTTP','HTTPS','SMTP'], correct:2, exp:'HTTPS (HyperText Transfer Protocol Secure) uses TLS/SSL encryption to securely transfer web pages, protecting data from interception.' },
+  { topic:'networks', level:'higher', q:'In a star network topology, what happens if the central switch fails?', options:['Only one device stops working','The network is unaffected','All devices lose network connection','Half the devices continue working'], correct:2, exp:'In a star topology, all devices connect through a central switch. If the switch fails, no devices can communicate — it is a single point of failure.' },
+  { topic:'networks', level:'foundation', q:'What is phishing?', options:['A type of firewall','A method of compressing data','A social engineering attack using fake emails/sites to steal information','A network topology'], correct:2, exp:'Phishing involves sending fake emails or creating fake websites that appear legitimate, tricking users into revealing passwords or personal information.' },
+  { topic:'networks', level:'higher', q:'What is a key difference between a virus and a worm?', options:['A virus encrypts files; a worm does not','A worm self-replicates across networks without needing a host file; a virus attaches to a file','A worm deletes files; a virus does not','There is no difference'], correct:1, exp:'A worm can spread across networks independently. A virus needs to attach itself to a host file and relies on that file being shared to spread.' },
+  { topic:'networks', level:'foundation', q:'What is encryption used for in networking?', options:['To speed up data transmission','To compress file sizes','To scramble data so only authorised recipients can read it','To check for errors in packets'], correct:2, exp:'Encryption converts data into an unreadable format using an algorithm and key, so even if it is intercepted, it cannot be understood without the decryption key.' },
+  // ETHICS
+  { topic:'issues', level:'foundation', q:'What does the Computer Misuse Act 1990 make illegal?', options:['Using social media at work','Downloading copyrighted music','Unauthorised access to computer systems','Selling personal data to companies'], correct:2, exp:'The Computer Misuse Act 1990 creates three offences: unauthorised access, unauthorised access with intent to commit further offences, and unauthorised modification of computer material.' },
+  { topic:'issues', level:'foundation', q:'What is open source software?', options:['Software that is only free for students','Software whose source code is freely available to view, modify, and distribute','Software without any bugs','Software made by open-source companies only'], correct:1, exp:'Open source software makes its source code publicly available. Anyone can view, modify, and distribute it, subject to the licence terms.' },
+  { topic:'issues', level:'higher', q:'Which of these best describes the "digital divide"?', options:['The gap between digital and analogue signals','Inequality in access to technology and the internet between different groups or regions','The difference between hardware and software','The lag between technology development and legislation'], correct:1, exp:'The digital divide refers to the gap between people and communities who have access to modern information and communication technology and those who do not.' },
+  { topic:'issues', level:'foundation', q:'Under GDPR, what right do individuals have over their personal data?', options:['No rights — companies own the data','The right to request access to their data and have it deleted','Only the right to view but not delete data','Only companies with fewer than 250 employees must comply'], correct:1, exp:'GDPR gives individuals (data subjects) several rights including the right to access their data, correct inaccuracies, and request deletion (the "right to be forgotten").' },
+  { topic:'issues', level:'higher', q:'What is one environmental impact of widespread cloud computing?', options:['Reduces all carbon emissions','Increases individual device usage and emissions','Data centres have high energy consumption, contributing to carbon emissions','Makes devices last longer, reducing e-waste'], correct:2, exp:'While cloud computing can improve efficiency, data centres consume enormous amounts of electricity — often from non-renewable sources — contributing significantly to carbon emissions.' },
+];
+
+// ── FLASHCARD DATA ──
+const CARDS = [
+  // ALGORITHMS
+  {topic:'algorithms', term:'Decomposition', def:'Breaking a complex problem into smaller, more manageable sub-problems that can be solved individually.'},
+  {topic:'algorithms', term:'Abstraction', def:'Removing unnecessary detail from a problem, focusing only on the information that is needed.'},
+  {topic:'algorithms', term:'Bubble Sort', def:'A sorting algorithm that repeatedly compares and swaps adjacent elements until the list is sorted. O(n²) time complexity.'},
+  {topic:'algorithms', term:'Merge Sort', def:'A divide-and-conquer sorting algorithm. Splits the list, sorts each half recursively, then merges. O(n log n).'},
+  {topic:'algorithms', term:'Linear Search', def:'Checks each element in a list one by one until the target is found. Works on unsorted data. O(n) worst case.'},
+  {topic:'algorithms', term:'Binary Search', def:'Searches sorted data by repeatedly halving the search space. O(log n) — much faster than linear search on large datasets.'},
+  {topic:'algorithms', term:'Algorithm', def:'A precise step-by-step set of instructions for solving a problem or achieving a goal.'},
+  {topic:'algorithms', term:'Pseudocode', def:'A structured, human-readable way of describing an algorithm using English-like statements, not tied to any specific programming language.'},
+  // PROGRAMMING
+  {topic:'programming', term:'Variable', def:'A named memory location that stores a value which can change during execution.'},
+  {topic:'programming', term:'Constant', def:'A named value that is set once and cannot be changed during program execution.'},
+  {topic:'programming', term:'Boolean', def:'A data type that can only hold True or False.'},
+  {topic:'programming', term:'Function', def:'A named subroutine that performs a task and returns a value to the calling code.'},
+  {topic:'programming', term:'Procedure', def:'A named subroutine that performs a task but does NOT return a value.'},
+  {topic:'programming', term:'Array', def:'A data structure that stores multiple values of the same type in a single named variable, accessed by index.'},
+  {topic:'programming', term:'Iteration', def:'Repeating a block of code multiple times using loops (FOR, WHILE, DO...UNTIL).'},
+  {topic:'programming', term:'Selection', def:'Choosing which code to execute based on a condition (IF...THEN...ELSE or SWITCH/CASE).'},
+  {topic:'programming', term:'Input Validation', def:'Checking that data entered is of the correct type, within an acceptable range, and of the right length before processing.'},
+  {topic:'programming', term:'Casting', def:'Converting a value from one data type to another, e.g. converting the string "42" to the integer 42.'},
+  // DATA
+  {topic:'data', term:'Bit', def:'The smallest unit of data in computing — a single binary digit, either 0 or 1.'},
+  {topic:'data', term:'Byte', def:'A unit of 8 bits. Can represent 256 different values (0–255).'},
+  {topic:'data', term:'ASCII', def:'American Standard Code for Information Interchange. A 7-bit character encoding standard representing 128 characters.'},
+  {topic:'data', term:'Unicode', def:'A character encoding standard that covers all characters in every language worldwide, using more bits per character than ASCII.'},
+  {topic:'data', term:'Colour Depth', def:'The number of bits used to represent each pixel\'s colour. More bits = more possible colours.'},
+  {topic:'data', term:'Resolution', def:'The number of pixels in an image (width × height). Higher resolution = more detail = larger file size.'},
+  {topic:'data', term:'Lossy Compression', def:'A compression method that permanently removes data to reduce file size. Quality is reduced. Examples: MP3, JPEG.'},
+  {topic:'data', term:'Lossless Compression', def:'Compression that reduces file size without losing any data. The original can be perfectly restored. Examples: PNG, FLAC.'},
+  {topic:'data', term:'Hexadecimal', def:'Base-16 number system using digits 0–9 and A–F. Used as shorthand for binary — each hex digit = 4 binary bits.'},
+  {topic:'data', term:'Run-Length Encoding', def:'A lossless compression technique that stores runs of identical data as (value, count) pairs.'},
+  // NETWORKS
+  {topic:'networks', term:'LAN', def:'Local Area Network — a network covering a small area such as a school or office building, typically owned by one organisation.'},
+  {topic:'networks', term:'WAN', def:'Wide Area Network — a network spanning large geographic areas. The internet is the world\'s largest WAN.'},
+  {topic:'networks', term:'Router', def:'A device that forwards data packets between different networks, determining the best path for data to travel.'},
+  {topic:'networks', term:'Switch', def:'A network device that connects multiple devices within a LAN and uses MAC addresses to send data to the correct device.'},
+  {topic:'networks', term:'IP Address', def:'A unique numerical label assigned to each device on a network, used to identify and locate it.'},
+  {topic:'networks', term:'DNS', def:'Domain Name System — translates human-readable domain names (e.g. bbc.co.uk) into IP addresses.'},
+  {topic:'networks', term:'Packet', def:'A small unit of data transmitted over a network. Large messages are split into packets which travel independently and are reassembled.'},
+  // SECURITY
+  {topic:'security', term:'Malware', def:'Malicious software designed to damage, disrupt, or gain unauthorised access to computer systems. Includes viruses, worms, trojans, ransomware.'},
+  {topic:'security', term:'Phishing', def:'A social engineering attack using fake emails or websites to trick users into revealing sensitive information such as passwords.'},
+  {topic:'security', term:'Encryption', def:'The process of converting data into an unreadable format using an algorithm and key, so only authorised parties can read it.'},
+  {topic:'security', term:'Firewall', def:'A security system that monitors and controls incoming and outgoing network traffic based on predetermined security rules.'},
+  {topic:'security', term:'Brute Force Attack', def:'A cyberattack method that systematically tries every possible password or key until the correct one is found.'},
+  {topic:'security', term:'SQL Injection', def:'An attack where malicious SQL code is inserted into an input field to manipulate or gain unauthorised access to a database.'},
+  {topic:'security', term:'Two-Factor Authentication', def:'A security process requiring two separate forms of verification (e.g. password + SMS code) before granting access.'},
+  // ETHICS
+  {topic:'ethics', term:'Computer Misuse Act 1990', def:'UK law making it illegal to: access a computer without authorisation, access with intent to commit further crimes, or make unauthorised modifications.'},
+  {topic:'ethics', term:'GDPR', def:'General Data Protection Regulation — EU/UK law governing how organisations collect, store, and use personal data. Gives individuals rights over their data.'},
+  {topic:'ethics', term:'Copyright', def:'Legal protection for original creative works (including software) preventing unauthorised copying or distribution.'},
+  {topic:'ethics', term:'Open Source', def:'Software whose source code is freely available for anyone to view, modify, and distribute, subject to licence terms.'},
+  {topic:'ethics', term:'Proprietary Software', def:'Software owned by a company or individual. The source code is not made public and usage requires purchasing a licence.'},
+  {topic:'ethics', term:'Digital Divide', def:'The inequality between groups with and without access to modern information and communication technology.'},
+  {topic:'ethics', term:'E-waste', def:'Electronic waste — discarded electronic devices. A growing environmental problem as devices become obsolete quickly.'},
+];
+
+// ── CHEAT SHEET DATA ──
+const CHEAT_BLOCKS = [
+  {
+    title: '⚡ OCR Pseudocode Syntax',
+    items: [
+      {key:'IF condition THEN … ELSE … ENDIF', val:''},
+      {key:'FOR i = 1 TO n … NEXT i', val:''},
+      {key:'WHILE condition DO … ENDWHILE', val:''},
+      {key:'DO … UNTIL condition', val:''},
+      {key:'FUNCTION name(params) … ENDFUNCTION', val:''},
+      {key:'PROCEDURE name(params) … ENDPROCEDURE', val:''},
+      {key:'PRINT "text"', val:'output'},
+      {key:'x = USERINPUT', val:'input'},
+    ]
+  },
+  {
+    title: '🔢 Binary Reference',
+    items: [
+      {key:'128', val:'64  32  16  8  4  2  1'},
+      {key:'Binary → Denary', val:'sum of active bits'},
+      {key:'Left shift ×2', val:'Right shift ÷2'},
+      {key:'1 nibble = 4 bits', val:'1 byte = 8 bits'},
+      {key:'1 KB = 1024 bytes', val:'1 MB = 1024 KB'},
+      {key:'Hex digits', val:'0–9 then A(10)–F(15)'},
+      {key:'1111 1111 in hex', val:'FF = 255 denary'},
+    ]
+  },
+  {
+    title: '🖼️ Image File Size Formula',
+    items: [
+      {key:'File size (bits)', val:'W × H × Colour depth'},
+      {key:'File size (bytes)', val:'÷ 8 from above'},
+      {key:'e.g. 100×100, 24-bit', val:'100×100×24÷8 = 30,000 B'},
+      {key:'Colour depth = 1 bit', val:'2 colours (monochrome)'},
+      {key:'Colour depth = 8 bit', val:'256 colours'},
+      {key:'Colour depth = 24 bit', val:'~16.7 million colours'},
+    ]
+  },
+  {
+    title: '🔊 Audio File Size Formula',
+    items: [
+      {key:'File size (bits)', val:'Rate × Depth × Duration × Channels'},
+      {key:'e.g. 44,100 Hz, 16-bit, 1s', val:'44,100×16÷8 = 88,200 B'},
+      {key:'Sample rate', val:'samples per second (Hz)'},
+      {key:'Bit depth', val:'bits per sample'},
+      {key:'CD quality', val:'44,100 Hz, 16-bit, stereo'},
+    ]
+  },
+  {
+    title: '🔐 Security Threats Quick List',
+    items: [
+      {key:'Virus', val:'attaches to files, needs host'},
+      {key:'Worm', val:'self-replicates, no host needed'},
+      {key:'Trojan', val:'disguised as legitimate software'},
+      {key:'Ransomware', val:'encrypts files, demands payment'},
+      {key:'Spyware', val:'secretly monitors user activity'},
+      {key:'Phishing', val:'fake emails / social engineering'},
+      {key:'Brute force', val:'tries all password combinations'},
+      {key:'SQL injection', val:'malicious SQL in input fields'},
+    ]
+  },
+  {
+    title: '📡 Key Protocols',
+    items: [
+      {key:'HTTP / HTTPS', val:'web pages (S = encrypted)'},
+      {key:'FTP', val:'file transfer'},
+      {key:'SMTP', val:'send email'},
+      {key:'IMAP / POP3', val:'receive email'},
+      {key:'TCP/IP', val:'internet data transport'},
+      {key:'DNS', val:'domain name → IP address'},
+    ]
+  },
+  {
+    title: '⚖️ Key Legislation',
+    items: [
+      {key:'Computer Misuse Act 1990', val:'unauthorised access illegal'},
+      {key:'Data Protection Act 2018', val:'GDPR — personal data rights'},
+      {key:'Copyright Act 1988', val:'protects creative works'},
+    ]
+  },
+  {
+    title: '⚙️ Sorting Algorithm Comparison',
+    items: [
+      {key:'Bubble sort', val:'O(n²) — simple, slow'},
+      {key:'Merge sort', val:'O(n log n) — efficient'},
+      {key:'Insertion sort', val:'O(n²) worst, O(n) best'},
+      {key:'Linear search', val:'O(n) — unsorted data'},
+      {key:'Binary search', val:'O(log n) — sorted data only'},
+    ]
+  },
+];
+
+// ── EXAM TIPS ──
+const TIPS = [
+  {icon:'📝', title:'Use exam reference language', text:'In Section A, use OCR\'s reference language (not Python) unless told otherwise. Show ALL working in traces.'},
+  {icon:'🎯', title:'Read the mark scheme language', text:'Use words like "stored", "sends", "receives", "checks". Examiners look for precise technical vocabulary.'},
+  {icon:'📐', title:'Flowchart shapes matter', text:'Diamond = decision, rectangle = process, oval = start/end, parallelogram = input/output. Wrong shapes lose marks.'},
+  {icon:'🔢', title:'Show binary working', text:'Write out place values (128 64 32 16 8 4 2 1) before answering. Cross out zeros clearly.'},
+  {icon:'⏱️', title:'Manage your time', text:'Paper 2 is 1h 30min for 80 marks. Roughly 1 mark per minute. Don\'t spend too long on 1-mark questions.'},
+  {icon:'🔄', title:'Section B — practise pseudocode', text:'Practise writing algorithms before the exam. Know FOR, WHILE, IF-ELSE, arrays, and subroutines cold.'},
+  {icon:'✅', title:'Always define, don\'t just list', text:'For "what is X?" questions, give a definition not an example. For "give an example" questions, give a specific example.'},
+  {icon:'💡', title:'Advantage/disadvantage questions', text:'Always give a reason, not just a label. "It is faster" needs "…because no translation is needed at run time."'},
+  {icon:'🛡️', title:'Security questions', text:'For each threat, know: what it is, how it works, and what defends against it. Pair threats with countermeasures.'},
+  {icon:'🌍', title:'Ethics questions — be balanced', text:'For ethical/environmental questions, give both sides or be specific about which law applies. Don\'t be vague.'},
+  {icon:'📊', title:'Trace tables', text:'Update every column on every row. Be methodical. The examiner is checking your working, not just the final answer.'},
+  {icon:'🔍', title:'Check your algorithm traces', text:'When tracing binary search, always identify the mid-point correctly. Show each iteration as a new row.'},
+];
+
+// ── ALGORITHM PSEUDOCODES ──
+const ALGO_CODE = {
+  bubble: `<span class="cm">// Bubble Sort</span>
+<span class="kw">PROCEDURE</span> <span class="fn">bubbleSort</span>(arr)
+  n = <span class="fn">LEN</span>(arr)
+  <span class="kw">FOR</span> i = 0 <span class="kw">TO</span> n - 2
+    <span class="kw">FOR</span> j = 0 <span class="kw">TO</span> n - i - 2
+      <span class="kw">IF</span> arr[j] > arr[j+1] <span class="kw">THEN</span>
+        temp = arr[j]
+        arr[j] = arr[j+1]
+        arr[j+1] = temp  <span class="cm">// swap</span>
+      <span class="kw">ENDIF</span>
+    <span class="kw">NEXT</span> j
+  <span class="kw">NEXT</span> i
+<span class="kw">ENDPROCEDURE</span>`,
+  merge: `<span class="cm">// Merge Sort (simplified)</span>
+<span class="kw">FUNCTION</span> <span class="fn">mergeSort</span>(arr)
+  <span class="kw">IF</span> <span class="fn">LEN</span>(arr) <= 1 <span class="kw">THEN</span>
+    <span class="kw">RETURN</span> arr
+  <span class="kw">ENDIF</span>
+  mid = <span class="fn">LEN</span>(arr) / 2
+  left = <span class="fn">mergeSort</span>(arr[0 : mid])
+  right = <span class="fn">mergeSort</span>(arr[mid : end])
+  <span class="kw">RETURN</span> <span class="fn">merge</span>(left, right)
+<span class="kw">ENDFUNCTION</span>
+
+<span class="cm">// Merge two sorted halves together</span>
+<span class="kw">FUNCTION</span> <span class="fn">merge</span>(left, right)
+  result = []
+  <span class="kw">WHILE</span> left != [] AND right != []
+    <span class="kw">IF</span> left[0] <= right[0] <span class="kw">THEN</span>
+      result.<span class="fn">append</span>(left[0])
+      left = left[1:]
+    <span class="kw">ELSE</span>
+      result.<span class="fn">append</span>(right[0])
+      right = right[1:]
+    <span class="kw">ENDIF</span>
+  <span class="kw">ENDWHILE</span>
+  <span class="kw">RETURN</span> result + left + right
+<span class="kw">ENDFUNCTION</span>`,
+  insertion: `<span class="cm">// Insertion Sort</span>
+<span class="kw">PROCEDURE</span> <span class="fn">insertionSort</span>(arr)
+  <span class="kw">FOR</span> i = 1 <span class="kw">TO</span> <span class="fn">LEN</span>(arr) - 1
+    key = arr[i]
+    j = i - 1
+    <span class="kw">WHILE</span> j >= 0 AND arr[j] > key
+      arr[j + 1] = arr[j]
+      j = j - 1
+    <span class="kw">ENDWHILE</span>
+    arr[j + 1] = key  <span class="cm">// insert in correct pos</span>
+  <span class="kw">NEXT</span> i
+<span class="kw">ENDPROCEDURE</span>`,
+  linear: `<span class="cm">// Linear Search</span>
+<span class="kw">FUNCTION</span> <span class="fn">linearSearch</span>(arr, target)
+  <span class="kw">FOR</span> i = 0 <span class="kw">TO</span> <span class="fn">LEN</span>(arr) - 1
+    <span class="kw">IF</span> arr[i] == target <span class="kw">THEN</span>
+      <span class="kw">RETURN</span> i  <span class="cm">// found at index i</span>
+    <span class="kw">ENDIF</span>
+  <span class="kw">NEXT</span> i
+  <span class="kw">RETURN</span> -1  <span class="cm">// not found</span>
+<span class="kw">ENDFUNCTION</span>`,
+  binary: `<span class="cm">// Binary Search (requires sorted array)</span>
+<span class="kw">FUNCTION</span> <span class="fn">binarySearch</span>(arr, target)
+  low = 0
+  high = <span class="fn">LEN</span>(arr) - 1
+  <span class="kw">WHILE</span> low <= high
+    mid = (low + high) / 2
+    <span class="kw">IF</span> arr[mid] == target <span class="kw">THEN</span>
+      <span class="kw">RETURN</span> mid  <span class="cm">// found!</span>
+    <span class="kw">ELSE IF</span> arr[mid] < target <span class="kw">THEN</span>
+      low = mid + 1  <span class="cm">// search right half</span>
+    <span class="kw">ELSE</span>
+      high = mid - 1  <span class="cm">// search left half</span>
+    <span class="kw">ENDIF</span>
+  <span class="kw">ENDWHILE</span>
+  <span class="kw">RETURN</span> -1  <span class="cm">// not found</span>
+<span class="kw">ENDFUNCTION</span>`,
+};
+
+// ═══════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════
+let quizQuestions = [];
+let currentQ = 0;
+let score = 0;
+let answered = false;
+let currentDiff = 'all';
+let algoData = [];
+let algoRunning = false;
+
+let allCards = [...CARDS];
+let filteredCards = [...allCards];
+let currentCard = 0;
+let cardFlipped = false;
+
+// ═══════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════
+window.addEventListener('DOMContentLoaded', () => {
+  renderTopics();
+  renderCheatSheet();
+  renderTips();
+  resetQuiz();
+  setupAlgo();
+  renderCard();
+});
+
+// ═══════════════════════════════════════════════════════
+// TOPICS
+// ═══════════════════════════════════════════════════════
+function renderTopics() {
+  const grid = document.getElementById('topicsGrid');
+  grid.innerHTML = TOPICS.map(t => `
+    <div class="topic-card" style="--card-color:${t.color}" onclick="openModal('${t.id}')">
+      <div class="topic-icon">${t.icon}</div>
+      <div class="topic-num">${t.num}</div>
+      <div class="topic-title">${t.title}</div>
+      <div class="topic-desc">${t.desc}</div>
+      <div class="topic-tags">${t.tags.map(tg=>`<span class="tag">${tg}</span>`).join('')}</div>
+    </div>
+  `).join('');
+}
+
+// ═══════════════════════════════════════════════════════
+// MODAL
+// ═══════════════════════════════════════════════════════
+function openModal(id) {
+  const topic = TOPICS.find(t => t.id === id);
+  if (!topic) return;
+  document.getElementById('modalLabel').textContent = topic.num + ' — ' + topic.icon;
+  document.getElementById('modalTitle').textContent = topic.title;
+  document.getElementById('modalBody').innerHTML = topic.content;
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('modalOverlay')) closeModalDirect();
+}
+
+function closeModalDirect() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// ═══════════════════════════════════════════════════════
+// QUIZ
+// ═══════════════════════════════════════════════════════
+function setDiff(diff, btn) {
+  currentDiff = diff;
+  document.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  resetQuiz();
+}
+
+function getFilteredQs() {
+  const topic = document.getElementById('topicSelect').value;
+  return QUESTIONS.filter(q =>
+    (topic === 'all' || q.topic === topic) &&
+    (currentDiff === 'all' || q.level === currentDiff)
+  );
+}
+
+function resetQuiz() {
+  const pool = getFilteredQs();
+  const shuffled = [...pool].sort(() => Math.random() - 0.5);
+  quizQuestions = shuffled.slice(0, Math.min(10, shuffled.length));
+  currentQ = 0;
+  score = 0;
+  answered = false;
+  document.getElementById('resultSummary').classList.remove('show');
+  document.getElementById('quizNav').style.display = '';
+  document.getElementById('scoreBar').style.width = '0%';
+  document.getElementById('quizTopic').textContent =
+    document.getElementById('topicSelect').options[document.getElementById('topicSelect').selectedIndex].text;
+  if (quizQuestions.length === 0) {
+    document.getElementById('quizQuestion').textContent = 'No questions found for this filter. Try another topic or level.';
+    document.getElementById('quizOptions').innerHTML = '';
+    document.getElementById('quizProgress').textContent = '—';
+    document.getElementById('quizFeedback').classList.remove('visible');
+    document.getElementById('nextBtn').style.display = 'none';
+    return;
+  }
+  renderQuestion();
+}
+
+function renderQuestion() {
+  if (currentQ >= quizQuestions.length) {
+    showResult();
+    return;
+  }
+  const q = quizQuestions[currentQ];
+  answered = false;
+  document.getElementById('quizProgress').textContent = `Q${currentQ + 1} of ${quizQuestions.length}`;
+  document.getElementById('quizQuestion').textContent = q.q;
+  document.getElementById('quizFeedback').classList.remove('visible', 'wrong-fb');
+  document.getElementById('nextBtn').style.display = 'none';
+
+  const letters = ['A','B','C','D'];
+  document.getElementById('quizOptions').innerHTML = q.options.map((opt, i) => `
+    <button class="quiz-option" onclick="answerQ(${i})" id="opt-${i}">
+      <span class="option-letter">${letters[i]}.</span> ${opt}
+    </button>
+  `).join('');
+}
+
+function answerQ(idx) {
+  if (answered) return;
+  answered = true;
+  const q = quizQuestions[currentQ];
+  const opts = document.querySelectorAll('.quiz-option');
+  opts.forEach(o => o.disabled = true);
+  opts[q.correct].classList.add('correct');
+  const fb = document.getElementById('quizFeedback');
+  if (idx === q.correct) {
+    score++;
+    fb.innerHTML = `<strong>✅ Correct!</strong> ${q.exp}`;
+    fb.classList.add('visible');
+    fb.classList.remove('wrong-fb');
+  } else {
+    opts[idx].classList.add('wrong');
+    fb.innerHTML = `<strong>❌ Not quite.</strong> The correct answer was <strong>${q.options[q.correct]}</strong>. ${q.exp}`;
+    fb.classList.add('visible', 'wrong-fb');
+  }
+  const prog = ((currentQ + 1) / quizQuestions.length) * 100;
+  document.getElementById('scoreBar').style.width = prog + '%';
+  document.getElementById('nextBtn').style.display = 'inline-flex';
+  currentQ++;
+}
+
+function nextQuestion() {
+  if (currentQ >= quizQuestions.length) {
+    showResult();
+  } else {
+    renderQuestion();
+  }
+}
+
+function showResult() {
+  document.getElementById('quizOptions').innerHTML = '';
+  document.getElementById('quizQuestion').textContent = '';
+  document.getElementById('quizFeedback').classList.remove('visible');
+  document.getElementById('nextBtn').style.display = 'none';
+  document.getElementById('scoreBar').style.width = '100%';
+  const pct = Math.round((score / quizQuestions.length) * 100);
+  const grade = pct >= 90 ? '🏆 Excellent — Grade 8/9 territory!' :
+                pct >= 75 ? '🎯 Great — Grade 7 range' :
+                pct >= 60 ? '📈 Good — Grade 5/6 range' :
+                pct >= 40 ? '📚 Keep revising — Grade 3/4 range' : '💪 More practice needed — keep going!';
+  document.getElementById('resultScore').textContent = `${score}/${quizQuestions.length}`;
+  document.getElementById('resultGrade').textContent = grade;
+  document.getElementById('resultSummary').classList.add('show');
+}
+
+// ═══════════════════════════════════════════════════════
+// FLASHCARDS
+// ═══════════════════════════════════════════════════════
+function setCardTopic(topic, btn) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  filteredCards = topic === 'all' ? [...allCards] : allCards.filter(c => c.topic === topic);
+  currentCard = 0;
+  unflipCard();
+  renderCard();
+}
+
+function renderCard() {
+  if (!filteredCards.length) return;
+  const card = filteredCards[currentCard];
+  document.getElementById('cardTerm').textContent = card.term;
+  document.getElementById('cardDef').textContent = card.def;
+  document.getElementById('cardCounter').textContent = `${currentCard + 1} / ${filteredCards.length}`;
+}
+
+function flipCard() {
+  const fc = document.getElementById('flashcard');
+  cardFlipped = !cardFlipped;
+  fc.classList.toggle('flipped', cardFlipped);
+}
+
+function unflipCard() {
+  cardFlipped = false;
+  document.getElementById('flashcard').classList.remove('flipped');
+}
+
+function nextCard() {
+  currentCard = (currentCard + 1) % filteredCards.length;
+  unflipCard();
+  setTimeout(renderCard, 150);
+}
+
+function prevCard() {
+  currentCard = (currentCard - 1 + filteredCards.length) % filteredCards.length;
+  unflipCard();
+  setTimeout(renderCard, 150);
+}
+
+function shuffleCards() {
+  filteredCards.sort(() => Math.random() - 0.5);
+  currentCard = 0;
+  unflipCard();
+  renderCard();
+}
+
+// ═══════════════════════════════════════════════════════
+// CHEAT SHEET
+// ═══════════════════════════════════════════════════════
+function renderCheatSheet() {
+  document.getElementById('cheatGrid').innerHTML = CHEAT_BLOCKS.map(block => `
+    <div class="cheat-block">
+      <div class="cheat-title">${block.title}</div>
+      ${block.items.map(item => `
+        <div class="cheat-item">
+          <span class="cheat-key">${item.key}</span>
+          ${item.val ? `<span class="cheat-val">${item.val}</span>` : ''}
+        </div>
+      `).join('')}
+    </div>
+  `).join('');
+}
+
+// ═══════════════════════════════════════════════════════
+// ALGORITHM VISUALISER
+// ═══════════════════════════════════════════════════════
+function generateData(n=10) {
+  return Array.from({length:n}, () => Math.floor(Math.random()*90)+10);
+}
+
+function renderBars(data, highlight={}) {
+  const canvas = document.getElementById('algoCanvas');
+  const maxVal = Math.max(...data);
+  canvas.innerHTML = data.map((v,i) => {
+    let cls = 'bar';
+    if (highlight.sorted && highlight.sorted.includes(i)) cls += ' sorted';
+    else if (highlight.comparing && highlight.comparing.includes(i)) cls += ' comparing';
+    else if (highlight.pivot && highlight.pivot === i) cls += ' pivot';
+    const h = Math.max((v / maxVal) * 100, 8);
+    return `<div class="${cls}" style="height:${h}px; width:${Math.floor(800/data.length)-6}px; min-width:24px">${v}</div>`;
+  }).join('');
+}
+
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+function setupAlgo() {
+  const algo = document.getElementById('algoSelect').value;
+  algoData = (algo === 'linear' || algo === 'binary') ? [12,25,33,41,57,63,78,82,91,95] : generateData(10);
+  renderBars(algoData);
+  document.getElementById('algoCode').innerHTML = ALGO_CODE[algo];
+  document.getElementById('algoStatus').textContent = '';
+  algoRunning = false;
+  document.getElementById('runBtn').textContent = '▶ Run';
+}
+
+function resetAlgo() { setupAlgo(); }
+
+async function runAlgo() {
+  if (algoRunning) return;
+  algoRunning = true;
+  document.getElementById('runBtn').textContent = '⏳ Running…';
+  const algo = document.getElementById('algoSelect').value;
+  const data = [...algoData];
+  const sorted = new Set();
+
+  try {
+    if (algo === 'bubble') {
+      const n = data.length;
+      for (let i = 0; i < n - 1; i++) {
+        for (let j = 0; j < n - i - 1; j++) {
+          renderBars(data, {comparing:[j,j+1], sorted:[...sorted]});
+          document.getElementById('algoStatus').textContent = `Comparing index ${j} (${data[j]}) and ${j+1} (${data[j+1]})`;
+          await sleep(400);
+          if (data[j] > data[j+1]) {
+            [data[j],data[j+1]] = [data[j+1],data[j]];
+            renderBars(data, {comparing:[j,j+1], sorted:[...sorted]});
+            await sleep(300);
+          }
+        }
+        sorted.add(n-1-i);
+        renderBars(data, {sorted:[...sorted]});
+      }
+      sorted.add(0);
+      renderBars(data, {sorted:[...sorted]});
+      document.getElementById('algoStatus').textContent = '✅ Sorted!';
+    } else if (algo === 'insertion') {
+      for (let i = 1; i < data.length; i++) {
+        const key = data[i]; let j = i - 1;
+        renderBars(data, {comparing:[i]});
+        document.getElementById('algoStatus').textContent = `Inserting ${key} into sorted portion`;
+        await sleep(350);
+        while (j >= 0 && data[j] > key) {
+          data[j+1] = data[j]; j--;
+          renderBars(data, {comparing:[j+1,j+2]});
+          await sleep(300);
+        }
+        data[j+1] = key;
+        renderBars(data, {sorted:[...Array(i+1).keys()]});
+        await sleep(200);
+      }
+      renderBars(data, {sorted:[...Array(data.length).keys()]});
+      document.getElementById('algoStatus').textContent = '✅ Sorted!';
+    } else if (algo === 'linear') {
+      const target = data[Math.floor(Math.random()*data.length)];
+      document.getElementById('algoStatus').textContent = `Searching for: ${target}`;
+      await sleep(600);
+      for (let i = 0; i < data.length; i++) {
+        renderBars(data, {comparing:[i]});
+        document.getElementById('algoStatus').textContent = `Checking index ${i}: ${data[i]}`;
+        await sleep(500);
+        if (data[i] === target) {
+          renderBars(data, {sorted:[i]});
+          document.getElementById('algoStatus').textContent = `✅ Found ${target} at index ${i} after ${i+1} comparison${i>0?'s':''}!`;
+          break;
+        }
+      }
+    } else if (algo === 'binary') {
+      const target = data[Math.floor(Math.random()*data.length)];
+      document.getElementById('algoStatus').textContent = `Binary search for: ${target}`;
+      await sleep(600);
+      let low = 0, high = data.length-1, steps = 0;
+      while (low <= high) {
+        const mid = Math.floor((low+high)/2); steps++;
+        renderBars(data, {comparing:[mid], pivot:mid});
+        document.getElementById('algoStatus').textContent = `Step ${steps}: mid=${mid}, value=${data[mid]}, low=${low}, high=${high}`;
+        await sleep(700);
+        if (data[mid] === target) {
+          renderBars(data, {sorted:[mid]});
+          document.getElementById('algoStatus').textContent = `✅ Found ${target} at index ${mid} in ${steps} step${steps>1?'s':''}!`;
+          break;
+        } else if (data[mid] < target) { low = mid+1; }
+        else { high = mid-1; }
+      }
+    } else if (algo === 'merge') {
+      document.getElementById('algoStatus').textContent = 'Merge sort: splitting…';
+      await animateMerge(data, 0, data.length-1, sorted);
+      renderBars(data, {sorted:[...Array(data.length).keys()]});
+      document.getElementById('algoStatus').textContent = '✅ Sorted!';
+    }
+  } catch(e) {}
+  algoData = data;
+  algoRunning = false;
+  document.getElementById('runBtn').textContent = '▶ Run';
+}
+
+async function animateMerge(arr, l, r, sorted) {
+  if (l >= r) return;
+  const mid = Math.floor((l+r)/2);
+  await animateMerge(arr, l, mid, sorted);
+  await animateMerge(arr, mid+1, r, sorted);
+  // merge
+  const left = arr.slice(l, mid+1), right = arr.slice(mid+1, r+1);
+  let i=0, j=0, k=l;
+  while(i<left.length && j<right.length) {
+    if(left[i]<=right[j]) { arr[k++]=left[i++]; } else { arr[k++]=right[j++]; }
+    renderBars(arr, {comparing:[k-1]});
+    await sleep(120);
+  }
+  while(i<left.length) { arr[k++]=left[i++]; }
+  while(j<right.length) { arr[k++]=right[j++]; }
+  renderBars(arr, {sorted:[...Array(k).keys().filter(x=>x>=l&&x<=r)]});
+  await sleep(100);
+}
+
+// ═══════════════════════════════════════════════════════
+// EXAM TIPS
+// ═══════════════════════════════════════════════════════
+function renderTips() {
+  document.getElementById('tipsGrid').innerHTML = TIPS.map(t => `
+    <div class="tip-card">
+      <div class="tip-icon">${t.icon}</div>
+      <div class="tip-title">${t.title}</div>
+      <div class="tip-text">${t.text}</div>
+    </div>
+  `).join('');
+}
+
+// ═══════════════════════════════════════════════════════
+// MOBILE MENU
+// ═══════════════════════════════════════════════════════
+function toggleMenu() {
+  document.getElementById('mobileMenu').classList.toggle('open');
+}
+function closeMenu() {
+  document.getElementById('mobileMenu').classList.remove('open');
+}
+</script>
+</body>
+</html>
