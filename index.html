@@ -3,7 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OCR J277 Paper 2 — CS Revision Hub</title>
+<title>OCR J277 Computer Science Revision Hub — Paper 1 &amp; 2</title>
+<meta name="description" content="Free OCR GCSE Computer Science (J277) revision: topic notes, exam-style quiz, flashcards, cheat sheet and sorting/searching visualiser, organised by the official spec headings.">
+<meta name="theme-color" content="#0a0d14">
+<meta property="og:title" content="OCR J277 Computer Science Revision Hub">
+<meta property="og:description" content="Notes, quiz, flashcards, cheat sheet and algorithm visualiser for OCR GCSE Computer Science J277.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -1061,9 +1065,31 @@
     font-weight: 700;
     margin-bottom: 1rem;
   }
+
+  /* ===== v2 additions ===== */
+  .skip { position:absolute; left:-999px; top:0; background:var(--accent); color:#001; padding:.6rem 1rem; z-index:200; font-weight:600; }
+  .skip:focus { left:.5rem; top:.5rem; }
+  .hamburger { background:none; border:0; }
+  .quiz-select { max-width:100%; min-width:0; }
+  :focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
+  .paper-tabs { display:flex; gap:.5rem; justify-content:center; flex-wrap:wrap; margin:0 auto 1.75rem; }
+  .paper-tab { background:var(--surface); border:1px solid var(--border); color:var(--text-dim); padding:.45rem 1rem; border-radius:999px; cursor:pointer; font:inherit; font-size:.8rem; font-weight:600; }
+  .paper-tab.active { background:rgba(0,229,255,.12); border-color:var(--accent); color:var(--accent); }
+  .paper-chip { display:inline-block; font-family:'Space Mono',monospace; font-size:.65rem; letter-spacing:.06em; padding:.15rem .5rem; border-radius:4px; margin-left:.5rem; vertical-align:middle; background:rgba(124,58,237,.18); color:#c4b5fd; }
+  .paper-chip.p2 { background:rgba(0,229,255,.12); color:var(--accent); }
+  .modal-body table { border-collapse:collapse; margin:.5rem 0 1rem; font-family:'Space Mono',monospace; font-size:.85rem; }
+  .modal-body th, .modal-body td { border:1px solid var(--border); padding:.35rem .8rem; text-align:center; }
+  .modal-body th { background:var(--surface2); color:var(--accent); }
+  .missed { text-align:left; margin-top:1.25rem; }
+  .missed h4 { font-size:.95rem; margin-bottom:.5rem; color:var(--accent4); }
+  .missed li { margin:0 0 .6rem 1.1rem; font-size:.88rem; color:var(--text-dim); }
+  .missed li strong { color:var(--text); }
+  .best { margin-top:.75rem; font-size:.85rem; color:var(--text-muted); }
+  @media (prefers-reduced-motion: reduce) { * { animation:none !important; transition:none !important; scroll-behavior:auto !important; } }
 </style>
 </head>
 <body>
+<a class="skip" href="#topics">Skip to content</a>
 
 <!-- NAV -->
 <nav>
@@ -1076,9 +1102,9 @@
     <li><a href="#algorithms">Algorithms</a></li>
     <li><a href="#tips">Exam Tips</a></li>
   </ul>
-  <div class="hamburger" onclick="toggleMenu()" id="hamburger">
+  <button type="button" class="hamburger" onclick="toggleMenu()" id="hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
     <span></span><span></span><span></span>
-  </div>
+  </button>
 </nav>
 
 <div class="mobile-menu" id="mobileMenu">
@@ -1093,25 +1119,30 @@
 <!-- HERO -->
 <div class="hero">
   <div class="hero-badge">OCR GCSE Computer Science · J277/02</div>
-  <h1>Master <span class="highlight">Paper 2</span><br>Computational Thinking</h1>
-  <p>Everything you need to ace the J277 Paper 2 exam — interactive quizzes, flashcards, algorithm visualisations, and more. Suitable for all levels, from Foundation to Higher.</p>
+  <h1>Master <span class="highlight">J277</span><br>Computer Science</h1>
+  <p>Revision for both OCR GCSE Computer Science papers, organised by the official spec headings — exam-style quizzes, flashcards, a cheat sheet and algorithm visualisations. Suitable for Foundation and Higher.</p>
   <div class="hero-cta">
     <a href="#quiz" class="btn-primary">▶ Start Quiz</a>
     <a href="#topics" class="btn-secondary">📚 Browse Topics</a>
   </div>
   <div class="hero-stats">
-    <div class="stat"><span class="stat-num">6</span><span class="stat-label">Topic Areas</span></div>
-    <div class="stat"><span class="stat-num">80+</span><span class="stat-label">Quiz Questions</span></div>
-    <div class="stat"><span class="stat-num">60+</span><span class="stat-label">Flashcards</span></div>
+    <div class="stat"><span class="stat-num" id="statTopics">–</span><span class="stat-label">Topic Areas</span></div>
+    <div class="stat"><span class="stat-num" id="statQ">–</span><span class="stat-label">Quiz Questions</span></div>
+    <div class="stat"><span class="stat-num" id="statCards">–</span><span class="stat-label">Flashcards</span></div>
   </div>
 </div>
 
 <!-- TOPICS -->
 <section id="topics">
   <div class="section-header">
-    <span class="section-label">// 2.1 – 2.6</span>
-    <h2 class="section-title">Paper 2 Topic Areas</h2>
-    <p class="section-desc">Click any topic to explore key concepts, definitions, and exam-style explanations.</p>
+    <span class="section-label">// spec headings</span>
+    <h2 class="section-title">Topic Areas</h2>
+    <p class="section-desc">Numbers match the OCR J277 specification. Click any topic to explore key concepts and exam-style explanations.</p>
+  </div>
+  <div class="paper-tabs" role="group" aria-label="Filter by paper">
+    <button type="button" class="paper-tab active" data-paper="all" onclick="setPaper('all',this)">All</button>
+    <button type="button" class="paper-tab" data-paper="2" onclick="setPaper('2',this)">Paper 2 · Computational thinking (J277/02)</button>
+    <button type="button" class="paper-tab" data-paper="1" onclick="setPaper('1',this)">Paper 1 · Computer systems (J277/01)</button>
   </div>
 
   <div class="topics-grid" id="topicsGrid"></div>
@@ -1140,14 +1171,20 @@
       <div class="score-bar-wrap"><div class="score-bar" id="scoreBar"></div></div>
 
       <div class="quiz-controls">
-        <select class="quiz-select" id="topicSelect" onchange="resetQuiz()">
+        <select class="quiz-select" id="topicSelect" aria-label="Quiz topic" onchange="resetQuiz()">
           <option value="all">All Topics</option>
-          <option value="algorithms">2.1 Algorithms</option>
-          <option value="programming">2.2 Programming Fundamentals</option>
-          <option value="languages">2.3 Languages & IDEs</option>
-          <option value="data">2.4 Data Representation</option>
-          <option value="networks">2.5 Networks & Security</option>
-          <option value="issues">2.6 Issues & Ethics</option>
+          <optgroup label="Paper 2 — J277/02">
+            <option value="algorithms">2.1 Algorithms</option>
+            <option value="programming">2.2 Programming fundamentals</option>
+            <option value="robust">2.3 Producing robust programs</option>
+            <option value="logic">2.4 Boolean logic</option>
+            <option value="languages">2.5 Languages &amp; IDEs</option>
+          </optgroup>
+          <optgroup label="Paper 1 — J277/01">
+            <option value="data">1.2 Memory, storage &amp; data representation</option>
+            <option value="networks">1.3–1.4 Networks &amp; security</option>
+            <option value="issues">1.6 Ethical, legal, cultural &amp; environmental</option>
+          </optgroup>
         </select>
       </div>
 
@@ -1155,7 +1192,7 @@
 
       <div class="quiz-options" id="quizOptions"></div>
 
-      <div class="quiz-feedback" id="quizFeedback"></div>
+      <div class="quiz-feedback" id="quizFeedback" aria-live="polite"></div>
 
       <div class="result-summary" id="resultSummary">
         <span class="result-score" id="resultScore">0/10</span>
@@ -1184,6 +1221,9 @@
       <button class="tab-btn active" onclick="setCardTopic('all',this)">All</button>
       <button class="tab-btn" onclick="setCardTopic('algorithms',this)">Algorithms</button>
       <button class="tab-btn" onclick="setCardTopic('programming',this)">Programming</button>
+      <button class="tab-btn" onclick="setCardTopic('robust',this)">Robust programs</button>
+      <button class="tab-btn" onclick="setCardTopic('logic',this)">Boolean logic</button>
+      <button class="tab-btn" onclick="setCardTopic('languages',this)">Languages &amp; IDEs</button>
       <button class="tab-btn" onclick="setCardTopic('data',this)">Data</button>
       <button class="tab-btn" onclick="setCardTopic('networks',this)">Networks</button>
       <button class="tab-btn" onclick="setCardTopic('security',this)">Security</button>
@@ -1191,7 +1231,7 @@
     </div>
 
     <div class="flashcard-wrap">
-      <div class="flashcard" id="flashcard" onclick="flipCard()">
+      <div class="flashcard" id="flashcard" onclick="flipCard()" role="button" tabindex="0" aria-label="Flashcard — press Enter or Space to flip, arrow keys to change card">
         <div class="card-face card-front">
           <span class="card-label">TERM</span>
           <div class="card-term" id="cardTerm">Click to begin</div>
@@ -1206,7 +1246,7 @@
 
     <div class="flashcard-controls">
       <button class="btn-secondary" onclick="prevCard()">← Prev</button>
-      <div class="card-counter" id="cardCounter">1 / 60</div>
+      <div class="card-counter" id="cardCounter">1 / 1</div>
       <button class="btn-secondary" onclick="nextCard()">Next →</button>
     </div>
 
@@ -1266,15 +1306,15 @@
 </section>
 
 <footer>
-  <p>OCR J277 Computer Science Paper 2 — Revision Hub</p>
+  <p>OCR J277 Computer Science — Revision Hub</p>
   <p style="margin-top:0.5rem; color:#334155;">Built to help students of all abilities. Not affiliated with OCR.</p>
-  <p style="margin-top:0.5rem;">To publish: upload to GitHub Pages — set <code style="background:var(--surface2);padding:0.1rem 0.4rem;border-radius:4px;color:var(--accent);font-size:0.8rem;">index.html</code> as root in your repo.</p>
+  <p style="margin-top:0.5rem;">Topic numbering follows OCR GCSE Computer Science J277 specification v3.1. Always check the official spec and past papers.</p>
 </footer>
 
 <!-- MODAL -->
 <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
-  <div class="modal">
-    <button class="modal-close" onclick="closeModalDirect()">×</button>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <button type="button" class="modal-close" id="modalClose" aria-label="Close" onclick="closeModalDirect()">×</button>
     <span class="modal-topic-label" id="modalLabel"></span>
     <h2 class="modal-title" id="modalTitle"></h2>
     <div class="modal-body" id="modalBody"></div>
@@ -1601,6 +1641,109 @@ const TOPICS = [
   }
 ];
 
+TOPICS.push({
+  id: 'robust', num: '2.3', icon: '🛡️', title: 'Producing Robust Programs', color: '#f59e0b',
+  desc: 'Defensive design, validation, maintainability and testing — making programs that cope with misuse and mistakes.',
+  tags: ['Validation', 'Authentication', 'Maintainability', 'Test data', 'Syntax vs logic errors'],
+  content: `
+    <h3>Defensive design</h3>
+    <ul>
+      <li><strong>Anticipating misuse</strong> — think about how users might enter wrong data or use the program in ways you did not intend, and plan for it.</li>
+      <li><strong>Authentication</strong> — confirming who the user is (for example username and password) so only authorised users get access.</li>
+      <li><strong>Input validation</strong> — automatic checks that data is sensible and allowed <em>before</em> it is processed. It does not prove the data is correct.</li>
+    </ul>
+    <h3>Common validation checks</h3>
+    <ul>
+      <li><strong>Range check</strong> — value lies between limits (e.g. age 11–16).</li>
+      <li><strong>Length check</strong> — number of characters is allowed (e.g. password at least 8).</li>
+      <li><strong>Type check</strong> — right data type (e.g. integer, not text).</li>
+      <li><strong>Presence check</strong> — something has been entered.</li>
+      <li><strong>Format check</strong> — matches a pattern (e.g. a postcode or date layout).</li>
+    </ul>
+    <h3>Maintainability</h3>
+    <ul>
+      <li><strong>Subprograms</strong> — split code into functions/procedures that can be reused and tested separately.</li>
+      <li><strong>Naming conventions</strong> — meaningful names for variables and subprograms.</li>
+      <li><strong>Indentation</strong> — shows structure so the code is easier to read.</li>
+      <li><strong>Commenting</strong> — explains what the code does and why.</li>
+    </ul>
+    <h3>Testing</h3>
+    <ul>
+      <li><strong>Purpose</strong> — to check the program works as intended and is robust, and to find errors.</li>
+      <li><strong>Iterative testing</strong> — testing repeatedly while the program is being developed, fixing problems as you go.</li>
+      <li><strong>Final (terminal) testing</strong> — testing the finished program against the requirements.</li>
+      <li><strong>Syntax error</strong> — breaks the rules of the language, so the program will not run or translate.</li>
+      <li><strong>Logic error</strong> — the program runs but gives wrong or unexpected results.</li>
+    </ul>
+    <h3>Test data</h3>
+    <table>
+      <tr><th>Type</th><th>Meaning</th><th>Example (valid ages 11–16)</th></tr>
+      <tr><td>Normal</td><td>Typical valid data</td><td>13</td></tr>
+      <tr><td>Boundary</td><td>On the edge of what is allowed, and just outside it</td><td>10, 11, 16, 17</td></tr>
+      <tr><td>Invalid / erroneous</td><td>Data that should be rejected</td><td>25, "abc"</td></tr>
+    </table>
+    <p>A good <strong>test plan</strong> lists the test, the data used, the expected result and the actual result.</p>
+  `
+});
+TOPICS.push({
+  id: 'logic', num: '2.4', icon: '🔌', title: 'Boolean Logic', color: '#10b981',
+  desc: 'AND, OR and NOT, truth tables, logic diagrams and combining operators.',
+  tags: ['AND', 'OR', 'NOT', 'Truth tables', 'Logic diagrams'],
+  content: `
+    <h3>The three operators</h3>
+    <ul>
+      <li><strong>AND</strong> — output is 1 only if <em>both</em> inputs are 1.</li>
+      <li><strong>OR</strong> — output is 1 if <em>at least one</em> input is 1.</li>
+      <li><strong>NOT</strong> — reverses the input (1 becomes 0, 0 becomes 1).</li>
+    </ul>
+    <h3>Truth tables</h3>
+    <table>
+      <tr><th>A</th><th>B</th><th>A AND B</th><th>A OR B</th></tr>
+      <tr><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+      <tr><td>0</td><td>1</td><td>0</td><td>1</td></tr>
+      <tr><td>1</td><td>0</td><td>0</td><td>1</td></tr>
+      <tr><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+    </table>
+    <table>
+      <tr><th>A</th><th>NOT A</th></tr>
+      <tr><td>0</td><td>1</td></tr>
+      <tr><td>1</td><td>0</td></tr>
+    </table>
+    <h3>Combining operators</h3>
+    <p>You can join operators, for example <strong>NOT (A AND B)</strong>. Work out the inner part first, add a column for each stage, and use brackets to show the order.</p>
+    <table>
+      <tr><th>A</th><th>B</th><th>A AND B</th><th>NOT (A AND B)</th></tr>
+      <tr><td>0</td><td>0</td><td>0</td><td>1</td></tr>
+      <tr><td>0</td><td>1</td><td>0</td><td>1</td></tr>
+      <tr><td>1</td><td>0</td><td>0</td><td>1</td></tr>
+      <tr><td>1</td><td>1</td><td>1</td><td>0</td></tr>
+    </table>
+    <h3>Exam tips</h3>
+    <ul>
+      <li>A truth table with <strong>n inputs</strong> has <strong>2ⁿ rows</strong> (2 inputs → 4 rows, 3 inputs → 8 rows).</li>
+      <li>List input combinations in binary counting order so you do not miss one.</li>
+      <li>Logic diagrams use standard gate shapes for AND, OR and NOT — learn to read and draw them.</li>
+      <li>The same operators appear in code: <code>IF age &gt;= 11 AND age &lt;= 16 THEN</code></li>
+    </ul>
+  `
+});
+
+// Spec numbering (OCR J277 v3.1) — paper 2 = Computational thinking, algorithms and programming; paper 1 = Computer systems
+const SPEC = {
+  algorithms:  {paper:2, num:'2.1'},
+  programming: {paper:2, num:'2.2'},
+  robust:      {paper:2, num:'2.3'},
+  logic:       {paper:2, num:'2.4'},
+  languages:   {paper:2, num:'2.5'},
+  data:        {paper:1, num:'1.2'},
+  networks:    {paper:1, num:'1.3–1.4'},
+  issues:      {paper:1, num:'1.6'}
+};
+TOPICS.forEach(t => { const m = SPEC[t.id]; if (m) { t.paper = m.paper; t.num = m.num; } });
+TOPICS.sort((a, b) => Object.keys(SPEC).indexOf(a.id) - Object.keys(SPEC).indexOf(b.id));
+let currentPaper = 'all';
+
+
 // ── QUIZ DATA ──
 const QUESTIONS = [
   // ALGORITHMS
@@ -1649,6 +1792,53 @@ const QUESTIONS = [
   { topic:'issues', level:'foundation', q:'Under GDPR, what right do individuals have over their personal data?', options:['No rights — companies own the data','The right to request access to their data and have it deleted','Only the right to view but not delete data','Only companies with fewer than 250 employees must comply'], correct:1, exp:'GDPR gives individuals (data subjects) several rights including the right to access their data, correct inaccuracies, and request deletion (the "right to be forgotten").' },
   { topic:'issues', level:'higher', q:'What is one environmental impact of widespread cloud computing?', options:['Reduces all carbon emissions','Increases individual device usage and emissions','Data centres have high energy consumption, contributing to carbon emissions','Makes devices last longer, reducing e-waste'], correct:2, exp:'While cloud computing can improve efficiency, data centres consume enormous amounts of electricity — often from non-renewable sources — contributing significantly to carbon emissions.' },
 ];
+
+QUESTIONS.push(
+  // 2.3 PRODUCING ROBUST PROGRAMS
+  { topic:'robust', level:'foundation', q:'Which type of test data sits on the edge of what a program should accept?', options:['Normal','Boundary','Invalid','Random'], correct:1, exp:'Boundary data is at the limits of the accepted range (and just outside it), where mistakes in comparisons are most likely.' },
+  { topic:'robust', level:'foundation', q:'A program accepts ages from 11 to 16 inclusive. Which value is boundary test data?', options:['13','11','25','"abc"'], correct:1, exp:'11 is the lowest allowed value, so it is on the boundary. 13 is normal data; 25 and "abc" are invalid.' },
+  { topic:'robust', level:'foundation', q:'A program accepts ages from 11 to 16 inclusive. Which is invalid (erroneous) test data?', options:['12','16','11','"sixteen"'], correct:3, exp:'"sixteen" is the wrong data type, so it should be rejected. 11, 12 and 16 are all valid.' },
+  { topic:'robust', level:'foundation', q:'Which describes a syntax error?', options:['The program runs but shows the wrong total','The program breaks the rules of the language so it cannot run','The program is slow','The program uses too many comments'], correct:1, exp:'A syntax error breaks the grammar rules of the language, for example misspelling a keyword. The program will not translate or run.' },
+  { topic:'robust', level:'foundation', q:'A program to find an average adds the numbers but divides by the wrong value. What type of error is this?', options:['Syntax error','Logic error','Validation error','Authentication error'], correct:1, exp:'The program runs without crashing but produces incorrect results. That is a logic error.' },
+  { topic:'robust', level:'foundation', q:'What is the purpose of input validation?', options:['To prove the data entered is correct','To check the data is sensible and allowed before it is processed','To make the program run faster','To encrypt the data'], correct:1, exp:'Validation checks that data is reasonable (for example in range or the right type). It cannot prove data is actually correct — a valid age could still be the wrong age.' },
+  { topic:'robust', level:'foundation', q:'Which validation check makes sure something has been entered in a field?', options:['Range check','Type check','Presence check','Format check'], correct:2, exp:'A presence check ensures a field is not left empty.' },
+  { topic:'robust', level:'foundation', q:'What is the purpose of authentication in a program?', options:['To fix syntax errors','To confirm the identity of the user','To speed up the program','To compress data'], correct:1, exp:'Authentication checks that users are who they claim to be, for example with a username and password.' },
+  { topic:'robust', level:'foundation', q:'Which of these would NOT make a program easier to maintain?', options:['Adding comments','Using indentation','Using meaningful variable names','Naming every variable with a single letter'], correct:3, exp:'Single-letter names make code hard to understand. Comments, indentation and meaningful names all improve maintainability.' },
+  { topic:'robust', level:'higher', q:'Why does splitting a program into subprograms help maintainability?', options:['It makes the program use less memory in every case','Each part can be reused, tested and fixed separately','It removes the need for comments','It stops users entering invalid data'], correct:1, exp:'Subprograms let you reuse code and test or change one part without rewriting the whole program.' },
+  { topic:'robust', level:'higher', q:'When does iterative testing take place?', options:['Only after the program is finished','Repeatedly during development','Only before any code is written','Only when users report a bug'], correct:1, exp:'Iterative testing happens throughout development, so errors are found and fixed early. Final (terminal) testing happens at the end.' },
+  { topic:'robust', level:'higher', q:'Which description matches final (terminal) testing?', options:['Testing each line as it is typed','Testing the finished program against its requirements','Testing only boundary data','Testing the algorithm using a flowchart'], correct:1, exp:'Final testing checks the completed program works as required, using normal, boundary and invalid data.' },
+  { topic:'robust', level:'higher', q:'A password must be between 8 and 12 characters long. Which set of lengths best tests the boundaries?', options:['9, 10, 11','7, 8, 12, 13','0, 8, 100','1, 50, 200'], correct:1, exp:'Boundary testing uses the limits (8 and 12) and the values just outside them (7 and 13).' },
+
+  // 2.4 BOOLEAN LOGIC
+  { topic:'logic', level:'foundation', q:'What is the output of A AND B when A = 1 and B = 0?', options:['1','0','Undefined','It depends on the program'], correct:1, exp:'AND outputs 1 only when both inputs are 1.' },
+  { topic:'logic', level:'foundation', q:'What is the output of A OR B when A = 1 and B = 0?', options:['1','0','Undefined','2'], correct:0, exp:'OR outputs 1 when at least one input is 1.' },
+  { topic:'logic', level:'foundation', q:'What is the output of NOT A when A = 1?', options:['1','0','2','Undefined'], correct:1, exp:'NOT reverses its input, so NOT 1 = 0.' },
+  { topic:'logic', level:'foundation', q:'Which logic gate outputs 1 only when both inputs are 1?', options:['OR','NOT','AND','None of them'], correct:2, exp:'That is the definition of an AND gate.' },
+  { topic:'logic', level:'foundation', q:'When does an OR gate output 0?', options:['When either input is 1','When both inputs are 0','When both inputs are 1','Never'], correct:1, exp:'OR only outputs 0 when every input is 0.' },
+  { topic:'logic', level:'foundation', q:'How many rows does a truth table for two inputs have?', options:['2','3','4','8'], correct:2, exp:'Two inputs give 2² = 4 combinations, so 4 rows.' },
+  { topic:'logic', level:'higher', q:'How many rows does a truth table for three inputs have?', options:['6','8','9','12'], correct:1, exp:'Three inputs give 2³ = 8 combinations.' },
+  { topic:'logic', level:'higher', q:'What is NOT (A AND B) when A = 1 and B = 1?', options:['1','0','2','Undefined'], correct:1, exp:'A AND B = 1, and NOT 1 = 0.' },
+  { topic:'logic', level:'higher', q:'What is (A OR B) AND C when A = 0, B = 1 and C = 1?', options:['0','1','Undefined','2'], correct:1, exp:'A OR B = 1; then 1 AND 1 = 1.' },
+  { topic:'logic', level:'higher', q:'What is (A OR B) AND C when A = 1, B = 0 and C = 0?', options:['1','0','Undefined','2'], correct:1, exp:'A OR B = 1; then 1 AND 0 = 0.' },
+  { topic:'logic', level:'higher', q:'What is A AND NOT B when A = 1 and B = 0?', options:['0','1','Undefined','2'], correct:1, exp:'NOT B = 1, so 1 AND 1 = 1.' },
+  { topic:'logic', level:'foundation', q:'An alarm should sound only if the door is open AND the system is armed. Which operator joins the two conditions?', options:['OR','NOT','AND','DIV'], correct:2, exp:'Both conditions must be true at once, which is AND.' },
+  { topic:'logic', level:'higher', q:'Which expression correctly checks that age is between 11 and 16 inclusive?', options:['age >= 11 OR age <= 16','age >= 11 AND age <= 16','NOT age >= 11','age >= 11 AND age >= 16'], correct:1, exp:'AND requires both conditions. With OR, almost every number would pass (for example 5 is below 16).' },
+
+  // 2.5 LANGUAGES & IDEs (extra practice)
+  { topic:'languages', level:'foundation', q:'Which translator converts the whole program into machine code before it is run?', options:['Interpreter','Compiler','Editor','Debugger'], correct:1, exp:'A compiler translates the whole source code into an executable file before it runs.' },
+  { topic:'languages', level:'foundation', q:'Which translator converts assembly language into machine code?', options:['Compiler','Interpreter','Assembler','Linker'], correct:2, exp:'An assembler translates assembly language into machine code.' },
+  { topic:'languages', level:'foundation', q:'Which IDE feature points out mistakes such as syntax errors?', options:['Error diagnostics','Run-time environment','Colour scheme','Zoom'], correct:0, exp:'Error diagnostics help locate and explain errors in the code.' },
+  { topic:'languages', level:'foundation', q:'Which is an advantage of using an interpreter while developing?', options:['The program always runs faster','It runs line by line and stops at an error, helping debugging','It produces a standalone executable','It hides the source code'], correct:1, exp:'Interpreters execute one line at a time, so the line with the error is easy to find.' },
+  { topic:'languages', level:'foundation', q:'Which of these is a low-level language?', options:['Python','Assembly language','Java','HTML'], correct:1, exp:'Assembly language is low-level: it is close to the hardware and specific to a processor type.' },
+  { topic:'languages', level:'higher', q:'Why do most programmers prefer high-level languages?', options:['They run directly on the processor','They are easier to read, write and debug, and are more portable','They give direct control of memory addresses','They need no translator'], correct:1, exp:'High-level code is closer to human language, easier to maintain and can run on different hardware once translated.' },
+
+  // 2.2 PROGRAMMING (extra practice)
+  { topic:'programming', level:'foundation', q:'Which data type would you use to store the number 3.14?', options:['Integer','Real','String','Boolean'], correct:1, exp:'Numbers with a decimal part are stored as real (floating point) values.' },
+  { topic:'programming', level:'foundation', q:'What is the result of 17 MOD 5?', options:['3','2','3.4','12'], correct:1, exp:'MOD gives the remainder after division: 17 = 3 × 5 + 2.' },
+  { topic:'programming', level:'foundation', q:'What is the result of 17 DIV 5?', options:['3','2','3.4','12'], correct:0, exp:'DIV gives the whole-number part of a division: 17 ÷ 5 = 3 remainder 2, so the answer is 3.' },
+  { topic:'programming', level:'foundation', q:'Which type of loop repeats a set number of times?', options:['Count-controlled (FOR)','Condition-controlled (WHILE)','Selection (IF)','Recursive'], correct:0, exp:'A FOR loop is count-controlled: the number of repeats is known in advance.' }
+);
+
 
 // ── FLASHCARD DATA ──
 const CARDS = [
@@ -1708,6 +1898,38 @@ const CARDS = [
   {topic:'ethics', term:'Digital Divide', def:'The inequality between groups with and without access to modern information and communication technology.'},
   {topic:'ethics', term:'E-waste', def:'Electronic waste — discarded electronic devices. A growing environmental problem as devices become obsolete quickly.'},
 ];
+
+CARDS.push(
+  {topic:'robust', term:'Defensive design', def:'Planning a program so it copes with misuse and unexpected input — for example by anticipating misuse, validating input and authenticating users.'},
+  {topic:'robust', term:'Input validation', def:'Automatic checks that data entered is sensible and allowed before it is processed. It does not prove the data is correct.'},
+  {topic:'robust', term:'Authentication', def:'Checking that a user is who they claim to be, for example with a username and password.'},
+  {topic:'robust', term:'Maintainability', def:'How easy a program is to understand, fix and change. Improved by subprograms, naming conventions, indentation and comments.'},
+  {topic:'robust', term:'Syntax error', def:'A mistake that breaks the rules of the programming language, so the program cannot run or be translated.'},
+  {topic:'robust', term:'Logic error', def:'A mistake in the design of the code that lets the program run but gives wrong or unexpected results.'},
+  {topic:'robust', term:'Iterative testing', def:'Testing repeatedly while a program is being developed, fixing problems as they are found.'},
+  {topic:'robust', term:'Final (terminal) testing', def:'Testing the finished program against its requirements before it is released.'},
+  {topic:'robust', term:'Normal test data', def:'Typical valid data that the program should accept.'},
+  {topic:'robust', term:'Boundary test data', def:'Data on the edge of the accepted range, and the values just outside it.'},
+  {topic:'robust', term:'Invalid (erroneous) test data', def:'Data the program should reject, such as the wrong data type or a value outside the allowed range.'},
+  {topic:'robust', term:'Test plan', def:'A table listing each test, the data used, the expected result and the actual result.'},
+
+  {topic:'logic', term:'AND', def:'Boolean operator that outputs 1 only if both inputs are 1.'},
+  {topic:'logic', term:'OR', def:'Boolean operator that outputs 1 if at least one input is 1.'},
+  {topic:'logic', term:'NOT', def:'Boolean operator that reverses its input: 1 becomes 0 and 0 becomes 1.'},
+  {topic:'logic', term:'Truth table', def:'A table showing the output for every possible combination of inputs. n inputs give 2ⁿ rows.'},
+  {topic:'logic', term:'Logic diagram', def:'A diagram using standard gate symbols (AND, OR, NOT) joined by lines to show a Boolean expression.'},
+  {topic:'logic', term:'Combining operators', def:'Joining AND, OR and NOT in one expression, such as NOT (A AND B). Work out the inner part first.'},
+
+  {topic:'languages', term:'High-level language', def:'A programming language close to human language that is easier to read, write and debug and is portable between machines.'},
+  {topic:'languages', term:'Low-level language', def:'A language close to the hardware, such as assembly language or machine code. Specific to a type of processor.'},
+  {topic:'languages', term:'Machine code', def:'Binary instructions that the processor can execute directly.'},
+  {topic:'languages', term:'Assembly language', def:'A low-level language that uses mnemonics instead of binary. Translated to machine code by an assembler.'},
+  {topic:'languages', term:'Compiler', def:'Translates the whole source code into machine code before it runs, producing an executable file.'},
+  {topic:'languages', term:'Interpreter', def:'Translates and runs source code one line at a time, stopping at the first error.'},
+  {topic:'languages', term:'Assembler', def:'Translates assembly language into machine code.'},
+  {topic:'languages', term:'IDE', def:'Integrated Development Environment: software with an editor, error diagnostics, a run-time environment and translators to help write programs.'}
+);
+
 
 // ── CHEAT SHEET DATA ──
 const CHEAT_BLOCKS = [
@@ -1910,12 +2132,16 @@ let algoRunning = false;
 let allCards = [...CARDS];
 let filteredCards = [...allCards];
 let currentCard = 0;
+let missed = [];
 let cardFlipped = false;
 
 // ═══════════════════════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════════════════════
 window.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('statTopics').textContent = TOPICS.length;
+  document.getElementById('statQ').textContent = QUESTIONS.length;
+  document.getElementById('statCards').textContent = CARDS.length;
   renderTopics();
   renderCheatSheet();
   renderTips();
@@ -1929,15 +2155,21 @@ window.addEventListener('DOMContentLoaded', () => {
 // ═══════════════════════════════════════════════════════
 function renderTopics() {
   const grid = document.getElementById('topicsGrid');
-  grid.innerHTML = TOPICS.map(t => `
-    <div class="topic-card" style="--card-color:${t.color}" onclick="openModal('${t.id}')">
+  grid.innerHTML = TOPICS.filter(t => currentPaper === 'all' || String(t.paper) === currentPaper).map(t => `
+    <div class="topic-card" style="--card-color:${t.color}" onclick="openModal('${t.id}')" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openModal('${t.id}')}">
       <div class="topic-icon">${t.icon}</div>
-      <div class="topic-num">${t.num}</div>
+      <div class="topic-num">${t.num}<span class="paper-chip p${t.paper}">PAPER ${t.paper}</span></div>
       <div class="topic-title">${t.title}</div>
       <div class="topic-desc">${t.desc}</div>
       <div class="topic-tags">${t.tags.map(tg=>`<span class="tag">${tg}</span>`).join('')}</div>
     </div>
   `).join('');
+}
+
+function setPaper(p, btn) {
+  currentPaper = p;
+  document.querySelectorAll('.paper-tab').forEach(b => b.classList.toggle('active', b === btn));
+  renderTopics();
 }
 
 // ═══════════════════════════════════════════════════════
@@ -1951,16 +2183,31 @@ function openModal(id) {
   document.getElementById('modalBody').innerHTML = topic.content;
   document.getElementById('modalOverlay').classList.add('open');
   document.body.style.overflow = 'hidden';
+  lastFocus = document.activeElement;
+  document.getElementById('modalClose').focus();
 }
 
 function closeModal(e) {
   if (e.target === document.getElementById('modalOverlay')) closeModalDirect();
 }
 
+let lastFocus = null;
 function closeModalDirect() {
   document.getElementById('modalOverlay').classList.remove('open');
   document.body.style.overflow = '';
+  if (lastFocus && lastFocus.focus) lastFocus.focus();
 }
+document.addEventListener('keydown', e => {
+  const open = document.getElementById('modalOverlay').classList.contains('open');
+  if (e.key === 'Escape' && open) { closeModalDirect(); return; }
+  if (open) return;
+  const fc = document.getElementById('flashcard');
+  if (document.activeElement === fc) {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); flipCard(); }
+    else if (e.key === 'ArrowRight') { e.preventDefault(); nextCard(); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); prevCard(); }
+  }
+});
 
 // ═══════════════════════════════════════════════════════
 // QUIZ
@@ -1986,6 +2233,7 @@ function resetQuiz() {
   quizQuestions = shuffled.slice(0, Math.min(10, shuffled.length));
   currentQ = 0;
   score = 0;
+  missed = [];
   answered = false;
   document.getElementById('resultSummary').classList.remove('show');
   document.getElementById('quizNav').style.display = '';
@@ -2038,6 +2286,7 @@ function answerQ(idx) {
     fb.classList.remove('wrong-fb');
   } else {
     opts[idx].classList.add('wrong');
+    missed.push({ q: q.q, a: q.options[q.correct], exp: q.exp });
     fb.innerHTML = `<strong>❌ Not quite.</strong> The correct answer was <strong>${q.options[q.correct]}</strong>. ${q.exp}`;
     fb.classList.add('visible', 'wrong-fb');
   }
@@ -2068,6 +2317,22 @@ function showResult() {
                 pct >= 40 ? '📚 Keep revising — Grade 3/4 range' : '💪 More practice needed — keep going!';
   document.getElementById('resultScore').textContent = `${score}/${quizQuestions.length}`;
   document.getElementById('resultGrade').textContent = grade;
+  let extra = document.getElementById('resultExtra');
+  if (!extra) {
+    extra = document.createElement('div');
+    extra.id = 'resultExtra';
+    document.getElementById('resultSummary').appendChild(extra);
+  }
+  let bestTxt = '';
+  try {
+    const key = 'j277-best-' + document.getElementById('topicSelect').value;
+    const prev = parseInt(localStorage.getItem(key) || '-1', 10);
+    if (pct > prev) localStorage.setItem(key, String(pct));
+    bestTxt = '<p class="best">' + (pct > prev && prev >= 0 ? '🎉 New personal best: ' + pct + '%' : 'Personal best for this topic: ' + Math.max(pct, prev) + '%') + '</p>';
+  } catch (e) {}
+  extra.innerHTML = bestTxt + (missed.length
+    ? '<div class="missed"><h4>Review these (' + missed.length + ')</h4><ul>' + missed.map(m => '<li><strong>' + m.q + '</strong><br>Answer: ' + m.a + '. ' + m.exp + '</li>').join('') + '</ul></div>'
+    : '');
   document.getElementById('resultSummary').classList.add('show');
 }
 
@@ -2296,7 +2561,10 @@ function renderTips() {
 // MOBILE MENU
 // ═══════════════════════════════════════════════════════
 function toggleMenu() {
-  document.getElementById('mobileMenu').classList.toggle('open');
+  const open = document.getElementById('mobileMenu').classList.toggle('open');
+  const h = document.getElementById('hamburger');
+  h.setAttribute('aria-expanded', String(open));
+  h.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
 }
 function closeMenu() {
   document.getElementById('mobileMenu').classList.remove('open');
